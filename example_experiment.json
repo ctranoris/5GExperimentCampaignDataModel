@@ -1,0 +1,336 @@
+{
+    "id": "exp-camp-2025-01",
+    "name": "5G QoS Stress Test Campaign",
+    "version": "v1.2",
+    "description": "A campaign to evaluate the performance of a gold-slice eMBB service under varying UE loads and traffic conditions in 5G standalone environments with different testbeds.",
+    "short_description": "QoS and throughput benchmarking on 5G-SA gold slice",
+    "keywords": [
+        "5G",
+        "QoS",
+        "eMBB",
+        "Testbed",
+        "RAN"
+    ],
+    "related_project": "6G-Xperiment",
+    "owner_name": "Christos Tranoris",
+    "owner_email": "tranoris@example.org",
+    "contributors": [
+        "Maria D.",
+        "Nikos T."
+    ],
+    "start_time": "2025-04-01T09:00:00Z",
+    "end_time": "2025-04-15T18:00:00Z",
+    "tags": [
+        "MEC",
+        "Testbed",
+        "Validation"
+    ],
+    "objective": "Assess QoS consistency on gold slice under high UE load",
+    "hypothesis": "QoS will degrade when more than 10 UEs are active simultaneously",
+    "experiment_type": "load testing",
+    "expected_outcome": "Latency < 20ms for up to 10 UEs",
+    "config_repository": "https://github.com/5g-lab/qos-tests",
+    "workflow_engine": "OpenSlice",
+    "license": "CC-BY-4.0",
+    "data_access_policy": "open",
+    "external_dataset_links": [
+        "https://zenodo.org/record/123456"
+    ],
+    "affiliations": [
+        "UPatras",
+        "PNET"
+    ],
+    "contact_person": "tranoris@example.org",
+    "collaborators": [
+        "John P.",
+        "Elena M."
+    ],
+    "ontology_tags": [
+        "OpenRAN",
+        "mobility",
+        "slice101"
+    ],
+    "environment": {
+        "id": "env-001",
+        "name": "Indoor Edge RAN Setup",
+        "description": "5G-SA indoor setup using small cells with edge-based core",
+        "ue_types": [
+            "Samsung S21",
+            "Xiaomi Mi10"
+        ],
+        "ue_count": 50,
+        "ue_distribution": "uniform",
+        "mobility_model": "pedestrian",
+        "location_type": "outdoor",
+        "distance_from_cell": "~50m",
+        "interference_conditions": "moderate",
+        "coverage_type": "small cell",
+        "network_architecture": "5G-SA",
+        "dual_connectivity": false,
+        "carrier_aggregation": true,
+        "mec_enabled": true,
+        "is_virtualized": true,
+        "edge_location": "on-prem edge node",
+        "time_synchronized": false,
+        "orchestration_platform": "Kubernetes",
+        "external_emulators": [
+            "UEsim"
+        ],
+        "external_traffic_sources": [
+            "iperf3",
+            "TrafGen"
+        ],
+        "monitoring_stack": "Prometheus + Grafana",
+        "metadata": {
+            "testbed_ref": "Patras5G",
+            "notes": "Used for indoor baseline tests"
+        },
+        "testbed_refs": [
+            {
+                "id": "patras5g",
+                "name": "Patras5G",
+                "organization": "University of Patras",
+                "location": "Patras, Greece",
+                "available_domains": [
+                    "RAN",
+                    "Core",
+                    "MEC"
+                ],
+                "access_method": "OpenSlice Portal"
+            }
+        ],
+        "radio_domain": {
+            "ran_configuration": "O-RAN DU-RU split",
+            "ran_type": "gNB",
+            "frequency_band": "n78",
+            "bandwidth_mhz": 100,
+            "channel_bandwidth_mhz": 20,
+            "mimo": "4x4",
+            "antenna_type": "omni",
+            "tx_power_dbm": 43,
+            "scheduler_type": "QoS-aware",
+            "slicing_support": true,
+            "supported_qos_profiles": [
+                "5QI-9",
+                "5QI-7"
+            ],
+            "fronthaul_technology": "eCPRI",
+            "du_vendor": "Amarisoft",
+            "ru_vendor": "OpenRAN",
+            "tdd_config": "DL/UL 7:3",
+            "ran_slice_id": "slice101",
+            "location": "Outdoor lab",
+            "mobility_scenario": "moderate",
+            "coverage_radius_m": 100,
+            "interference_profile": "moderate",
+            "ric_enabled": true,
+            "ric_controller": "near-RT RIC",
+            "xapps_used": [
+                "QoS Optimizer"
+            ],
+            "metadata": {}
+        },
+        "compute_domain": {
+            "node_type": "Edge Node",
+            "architecture": "x86_64",
+            "cpu_cores": 16,
+            "cpu_model": "Intel Xeon Gold 6226R",
+            "ram_gb": 64,
+            "storage_gb": 1000,
+            "storage_type": "NVMe",
+            "gpu": true,
+            "gpu_model": "NVIDIA A100",
+            "virtualization": "KVM",
+            "container_runtime": "containerd",
+            "orchestrator": "Kubernetes",
+            "k8s_distribution": "vanilla",
+            "numa_enabled": true,
+            "hugepages_enabled": true,
+            "isolation_level": "dedicated",
+            "performance_profile": "realtime",
+            "os_image": "Ubuntu 22.04",
+            "kernel_version": "5.15.0",
+            "hypervisor_type": "QEMU",
+            "cloud_provider": "Private",
+            "metadata": {}
+        },
+        "transport_domain": {
+            "type": "fiber",
+            "bandwidth_mbps": 10000,
+            "latency_ms": 1,
+            "jitter_ms": 0.2,
+            "packet_loss_rate": 0.001,
+            "duplex_mode": "full",
+            "mtu": 1500,
+            "qos_support": true,
+            "qos_mechanism": "5QI",
+            "traffic_engineering": "segment routing",
+            "encapsulation": "VXLAN",
+            "slicing_support": true,
+            "virtual_link": true,
+            "underlay_type": "physical",
+            "interfaces_involved": [
+                "eth0",
+                "eth1"
+            ],
+            "service_provider": "Own infra",
+            "redundancy": "dual-homed",
+            "availability": "99.99%",
+            "synchronization_support": true,
+            "sync_type": "PTP",
+            "monitoring_enabled": true,
+            "monitoring_tool": "TWAMP",
+            "notes": "Transport verified before test",
+            "metadata": {}
+        }
+    },
+    "testing_sessions": [
+        {
+            "id": "sess-001",
+            "name": "Baseline DL Throughput",
+            "description": "Initial measurement session using 3 static UEs for DL QoS baseline",
+            "start_time": "2025-04-01T10:00:00Z",
+            "end_time": "2025-04-01T10:30:00Z",
+            "executed_by": "tranoris@example.org",
+            "trigger_method": "manual",
+            "measurement_family": "DRB, RLC",
+            "ue_profile": "3 UEs, static, 20 Mbps each",
+            "traffic_pattern": "DL bulk",
+            "qos_profile": "5QI-9",
+            "slice_id": "slice101",
+            "environment_snapshot": "git@abc123",
+            "network_config_snapshot": "snapshots/net_dl_config.yaml",
+            "ran_snapshot": "snapshots/ran-config-001.yaml",
+            "time_sync_status": "in-sync",
+            "outcome": "Passed",
+            "observed_issues": [],
+            "summary_metrics": {
+                "avg_dl_throughput": "85 Mbps",
+                "jitter": "0.5 ms",
+                "packet_loss": "0.0%"
+            },
+            "observations": [
+                {
+                    "id": "obs-n3-upf",
+                    "name": "N3-UPF interface capture",
+                    "type": "5G Core Interface",
+                    "location": "Edge UPF node",
+                    "target_component": "N3",
+                    "interface_name": "eth0",
+                    "collection_tool": "tcpdump",
+                    "description": "Captured user-plane traffic from RAN to UPF",
+                    "metadata": {
+                        "filter": "port 2152"
+                    },
+                    "artifacts": [
+                        {
+                            "id": "file-pcap-001",
+                            "name": "n3_capture.pcap",
+                            "file_path": "/captures/n3_capture.pcap",
+                            "file_type": "pcap",
+                            "uploaded_at": "2025-04-01T10:35:00Z"
+                        }
+                    ]
+                }
+            ],
+            "measurement_tools": [
+                {
+                    "id": "tool-iperf3",
+                    "name": "iperf3",
+                    "type": "active",
+                    "version": "3.11",
+                    "target_layer": "network",
+                    "description": "Generates DL UDP traffic",
+                    "collection_mode": "inline",
+                    "output_format": "CSV",
+                    "metadata": {
+                        "duration": "30s"
+                    }
+                },
+                {
+                    "id": "tool-prometheus",
+                    "name": "Prometheus",
+                    "type": "telemetry",
+                    "version": "2.46",
+                    "target_layer": "infrastructure",
+                    "description": "Telemetry scraping of RAN and Core metrics",
+                    "collection_mode": "agent-based",
+                    "output_format": "Prometheus format",
+                    "metadata": {
+                        "exporter": "node_exporter"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Baseline Throughput Test",
+            "start_time": "2025-04-01T10:00:00Z",
+            "end_time": "2025-04-01T10:30:00Z",
+            "executed_by": "tranoris@example.org",
+            "trigger_method": "manual",
+            "measurement_family": "DRB, RLC",
+            "ue_profile": "3 UEs, static, 20 Mbps each",
+            "traffic_pattern": "DL bulk",
+            "qos_profile": "5QI-9",
+            "slice_id": "slice101",
+            "environment_snapshot": "git@abc123",
+            "network_config_snapshot": "netconf_dl_throughput.json",
+            "ran_snapshot": "ran-config-001.yaml",
+            "time_sync_status": "in-sync",
+            "outcome": "Passed",
+            "observed_issues": [],
+            "summary_metrics": {
+                "avg_dl_throughput": "85 Mbps",
+                "avg_latency": "9 ms"
+            }
+        },
+        {
+            "name": "Mobility Test with 10 UEs",
+            "start_time": "2025-04-04T15:00:00Z",
+            "end_time": "2025-04-04T16:00:00Z",
+            "executed_by": "maria.d@example.org",
+            "trigger_method": "automated",
+            "measurement_family": "RRC, NRCell",
+            "ue_profile": "10 UEs, walking speed",
+            "traffic_pattern": "mixed UL/DL",
+            "qos_profile": "5QI-7",
+            "slice_id": "slice101",
+            "environment_snapshot": "git@def789",
+            "network_config_snapshot": "mobility-slice-profile.json",
+            "ran_snapshot": "ran-config-mobility.yaml",
+            "time_sync_status": "in-sync",
+            "outcome": "Degraded",
+            "observed_issues": [
+                "Increased jitter for UE7",
+                "2% packet loss on uplink"
+            ],
+            "summary_metrics": {
+                "avg_dl_throughput": "60 Mbps",
+                "jitter": "3 ms"
+            }
+        }
+    ],
+    "artifacts": [
+        {
+            "id": "file-001",
+            "name": "DL_throughput_results.csv",
+            "file_path": "/data/results/DL_throughput_results.csv",
+            "file_type": "csv",
+            "uploaded_at": "2025-04-01T11:00:00Z",
+            "metadata": {
+                "source": "iperf3",
+                "session": "Baseline Throughput Test"
+            }
+        },
+        {
+            "id": "file-002",
+            "name": "mobility_test_log.txt",
+            "file_path": "/logs/mobility_test_log.txt",
+            "file_type": "log",
+            "uploaded_at": "2025-04-04T17:00:00Z",
+            "metadata": {
+                "session": "Mobility Test with 10 UEs"
+            }
+        }
+    ]
+}
