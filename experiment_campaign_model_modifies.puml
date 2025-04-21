@@ -24,7 +24,8 @@ class ExperimentCampaign {
   +description: string                    ' Full description of the campaign
   +short_description: string              ' One-line summary
   +keywords: List<string>                 ' e.g., ["5G", "slicing", "QoS", "RAN"]
-  +related_project: string                ' e.g., "6G-Xperiment", "EU Horizon 5G"
+  +related_project: Project                ' Reference to Project 
+'   +related_project: string                ' e.g., "6G-Xperiment", "EU Horizon 5G"
 '   +owner_name: string                     ' e.g., "Christos T."
 '   +owner_email: string                    ' e.g., "tranoris@example.org"
   + owner : ContactInfo                   ' Reference to ContactInfo class
@@ -445,6 +446,25 @@ note right of ContactInfo::data
 end note
 
 
+class Project {
+  + id: string
+  + data : Map<String, String>
+}
+
+
+
+note right of Project::data
+  Example:
+  {
+  "name": "FIDAL"
+  "startDate": "Jan 2025"
+  "call":"SNS"
+  "duration": "35 months"
+  }
+end note
+
+
+
 ExperimentCampaign -- "1" Environment
 ExperimentCampaign  -- "*" TestingSession
 
@@ -461,6 +481,7 @@ TestingSession  -- "*" MeasurementTool : "measurement_tools"
 
 
 ExperimentCampaign --> Tag : Experiment Tags
+ExperimentCampaign --> Project : Eu procjet
 Testbed --> ContactInfo : contactInfo
 ExperimentCampaign --> ContactInfo : Experiment invlolvment
 
