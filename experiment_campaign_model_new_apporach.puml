@@ -18,11 +18,74 @@ title Experiment Campaign Data Model
 
 class ExperimentCampaign {
 '=== Basic Attributes ===
-  +id: string                             ' e.g., "exp-camp-2025-01"
-  +name: string                           ' e.g., "5G QoS Stress Test Campaign"
-  +version: string                        ' e.g., "v1.2"
-  +description: string                    ' Full description of the campaign
-  +short_description: string              ' One-line summary
+  +id: string                          
+  +name: string                         
+  +version: string                       
+  +description: string                  
+  +short_description: string           
+  +related_project: Project                
+  +contact_person: ContactInfo           
+  +start_time: datetime                 
+  +date_archived: datetime            
+  +tags: List<Tag>                
+  +metadata: Map        
+  +artifacts: List<RelatedFile>
+}
+
+
+note right of ExperimentCampaign::id
+  Example:
+  {
+    "id": "exp-camp-2025-01"
+    "name": "5G QoS Stress Test Campaign"
+    "version":"v1.2"
+    "description": "An experiment campaing aimed to evaluate the testbed"
+    "short_description": "testbed evaluation"
+    "related_project":   {
+            "name": "FIDAL"
+            "startDate": "Jan 2025"
+            "call":"SNS"
+            "duration": "36 months"
+        }
+    "contact_person":   {
+            "name": "Christos Tranoris" 
+            "position": "CTO"
+            "email": "some@where.com"
+            "phone": "+301234567890"
+            "organization": "Yes"
+        }
+    "start_time": "2025-04-01T09:00:00Z"
+    "end_time": "2025-04-15T18:00:00Z"
+    "date_archived": "2025-04-20T10:00:00Z"
+    "tags": [
+          {
+            "name": "SPEEDTEST",  
+            "description": "speedtest executioon"
+         },
+            {
+                "name": "PPDR",  
+                "description": "Test cases that are under the PPDR vertical"
+            }   
+    ]
+    "metadata": 
+    {
+      "location": "Patras, Greece",
+      "testbed": "Patras5G"
+    }
+    "artifacts": [
+      {
+        "id": "file-001",
+        "name": "metrics_output.csv",
+        "RelatedFile": "/some/path/metrics_output.csv",  
+        "file_type": "CSV",
+        "uploaded_at": "2025-04-01T09:00:00Z",
+        "metadata": 
+        {
+          "description": "Contains throughput metrics for all UEs",
+          "size": "2MB"
+        }
+      }
+    ]
   +related_project: Project                ' Reference to Project  class
   +contact_person: ContactInfo            ' Reference to ContactInfo class
   +start_time: datetime                   ' e.g., "2025-04-01T09:00:00Z"
@@ -31,8 +94,9 @@ class ExperimentCampaign {
   +tags: List<Tag>                       ' Reference to Tag class
   +metadata: Map                        ' Additional key-value annotations
   +artifacts: List<RelatedFile>
-}
 
+  }
+end note
 
 class Environment {
   +id: string                            ' e.g., "env-001"
