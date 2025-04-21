@@ -123,22 +123,20 @@ class Testbed {
 '   +description: string          ' Free-text, what the testbed provides
 '   +access_method: string        ' e.g., "VPN", "OpenSlice Federated Portal"
 '   +available_domains: List<string> ' e.g., ["RAN", "Core", "MEC", "Transport"]
-'   +metadata: Map                        ' Additional key-value annotations
-'   +artifacts: List<RelatedFile>
+  +metadata: Map                        ' Additional key-value annotations
+ +artifacts: List<RelatedFile>
 }
 
 
 note right of Testbed::data
   Example:
   {
-  +name: string                 ' e.g., "Patras5G", "YYY", "XXX"
-  +organization: string         ' e.g., "University of Patras"
-  +location: string             ' e.g., "Patras, Greece"
-  +description: string          ' Free-text, what the testbed provides
-  +access_method: string        ' e.g., "VPN", "OpenSlice Federated Portal"
-  +available_domains: List<string> ' e.g., ["RAN", "Core", "MEC", "Transport"]
-  +metadata: Map                        ' Additional key-value annotations
-  +artifacts: List<RelatedFile>
+    "name":"Patras5G"
+    "organization": "University of Patras"
+    "location":            "Patras, Greece"
+    "description":           "An automated 5G playground...."
+    "access_method":         ["VPN", "OpenSlice Federated Portal"]
+    "available_domains":   ["RAN", "Core", "MEC", "Transport"]
   }
 end note
 
@@ -419,11 +417,13 @@ class MeasurementTool {
 class Tag {
   + id: string
   + data : Map<String, String>
+  +metadata: Map                        ' Additional key-value annotations
 }
 note right of Tag::data
   Example:
   {
-    "name": "PPDR",    "description": "Test cases that are under the PPDR vertical"
+    "name": "PPDR",  
+    "description": "Test cases that are under the PPDR vertical"
   }
 end note
 
@@ -431,16 +431,17 @@ end note
 class ContactInfo {
 + id: string
   + data : Map<String, String>
+  +metadata: Map                        ' Additional key-value annotations
 }
 
 
 note right of ContactInfo::data
   Example:
   {
-   "name": "Christos Tranoris" 
-   "position": "CTO"
-   "email": some@wherr.com
-   "phone": "1234567890"
+    "name": "Christos Tranoris" 
+    "position": "CTO"
+    "email": "some@where.com"
+    "phone": "+301234567890"
     "organization": "Yes"
   }
 end note
@@ -449,6 +450,7 @@ end note
 class Project {
   + id: string
   + data : Map<String, String>
+  +metadata: Map                        ' Additional key-value annotations
 }
 
 
@@ -456,10 +458,10 @@ class Project {
 note right of Project::data
   Example:
   {
-  "name": "FIDAL"
-  "startDate": "Jan 2025"
-  "call":"SNS"
-  "duration": "35 months"
+    "name": "FIDAL"
+    "startDate": "Jan 2025"
+    "call":"SNS"
+    "duration": "35 months"
   }
 end note
 
