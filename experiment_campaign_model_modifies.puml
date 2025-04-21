@@ -174,60 +174,60 @@ class RadioDomain {
 }
 
 
-class ComputeDomain {
-  +node_type: string                 ' e.g., "Edge Node", "VM", "Baremetal"
-  +architecture: string             ' e.g., "x86_64", "arm64"
-  +cpu_cores: int                   ' e.g., 16
-  +cpu_model: string                ' e.g., "Intel Xeon Gold 6226R"
-  +ram_gb: int                      ' e.g., 64
-  +storage_gb: int                  ' e.g., 1000
-  +storage_type: string             ' e.g., "NVMe", "HDD", "Ceph Block"
-  +gpu: boolean                     ' e.g., true
-  +gpu_model: string                ' e.g., "NVIDIA A100", optional
-  +virtualization: string           ' e.g., "KVM", "Docker"
-  +container_runtime: string        ' e.g., "containerd", "Docker", "CRI-O"
-  +orchestrator: string             ' e.g., "Kubernetes", "OpenStack", "openSlice", "ONAP", "OSM"
-  +k8s_distribution: string         ' e.g., "vanilla", "MicroK8s", "OpenShift"
-  +numa_enabled: boolean            ' e.g., true
-  +hugepages_enabled: boolean       ' e.g., true
-  +isolation_level: string          ' e.g., "shared", "dedicated"
-  +performance_profile: string      ' e.g., "realtime", "balanced"
-  +os_image: string                 ' e.g., "Ubuntu 22.04 LTS", "Red Hat 8"
-  +kernel_version: string           ' e.g., "5.15.0-72-generic"
-  +hypervisor_type: string          ' e.g., "QEMU", "none"
-  +cloud_provider: string           ' e.g., "OpenStack", "AWS", "Private"
-  +metadata: Map                    ' Any extra info
-  +artifacts: List<RelatedFile>
-}
+' class ComputeDomain {
+'   +node_type: string                 ' e.g., "Edge Node", "VM", "Baremetal"
+'   +architecture: string             ' e.g., "x86_64", "arm64"
+'   +cpu_cores: int                   ' e.g., 16
+'   +cpu_model: string                ' e.g., "Intel Xeon Gold 6226R"
+'   +ram_gb: int                      ' e.g., 64
+'   +storage_gb: int                  ' e.g., 1000
+'   +storage_type: string             ' e.g., "NVMe", "HDD", "Ceph Block"
+'   +gpu: boolean                     ' e.g., true
+'   +gpu_model: string                ' e.g., "NVIDIA A100", optional
+'   +virtualization: string           ' e.g., "KVM", "Docker"
+'   +container_runtime: string        ' e.g., "containerd", "Docker", "CRI-O"
+'   +orchestrator: string             ' e.g., "Kubernetes", "OpenStack", "openSlice", "ONAP", "OSM"
+'   +k8s_distribution: string         ' e.g., "vanilla", "MicroK8s", "OpenShift"
+'   +numa_enabled: boolean            ' e.g., true
+'   +hugepages_enabled: boolean       ' e.g., true
+'   +isolation_level: string          ' e.g., "shared", "dedicated"
+'   +performance_profile: string      ' e.g., "realtime", "balanced"
+'   +os_image: string                 ' e.g., "Ubuntu 22.04 LTS", "Red Hat 8"
+'   +kernel_version: string           ' e.g., "5.15.0-72-generic"
+'   +hypervisor_type: string          ' e.g., "QEMU", "none"
+'   +cloud_provider: string           ' e.g., "OpenStack", "AWS", "Private"
+'   +metadata: Map                    ' Any extra info
+'   +artifacts: List<RelatedFile>
+' }
 
 
-class TransportDomain {
-  +type: string                       ' e.g., "fiber", "microwave", "satellite", "VXLAN"
-  +bandwidth_mbps: int               ' e.g., 10000
-  +latency_ms: float                 ' e.g., 1.2
-  +jitter_ms: float                  ' e.g., 0.3
-  +packet_loss_rate: float           ' e.g., 0.01 for 1%
-  +duplex_mode: string               ' e.g., "full", "half"
-  +mtu: int                          ' e.g., 1500
-  +qos_support: boolean              ' e.g., true
-  +qos_mechanism: string             ' e.g., "DiffServ", "IntServ", "5QI"
-  +traffic_engineering: string       ' e.g., "segment routing", "TE tunnels"
-  +encapsulation: string             ' e.g., "VXLAN", "MPLS", "GRE"
-  +slicing_support: boolean          ' e.g., true
-  +virtual_link: boolean             ' e.g., true for overlay links
-  +underlay_type: string             ' e.g., "physical", "VPN", "SD-WAN"
-  +interfaces_involved: List<string> ' e.g., ["eth0", "eth1", "ge-0/0/1"]
-  +service_provider: string          ' e.g., "Telecom A", "Own infra"
-  +redundancy: string                ' e.g., "dual-homed", "ring", "none"
-  +availability: string              ' e.g., "99.99%"
-  +synchronization_support: boolean  ' e.g., true
-  +sync_type: string                 ' e.g., "PTP", "NTP"
-  +monitoring_enabled: boolean       ' e.g., true
-  +monitoring_tool: string           ' e.g., "TWAMP", "Y.1731", "Prometheus exporter"
-  +notes: string                     ' Optional free-form notes
-  +metadata: Map                     ' Extra key-value annotations
-  +artifacts: List<RelatedFile>
-}
+' class TransportDomain {
+'   +type: string                       ' e.g., "fiber", "microwave", "satellite", "VXLAN"
+'   +bandwidth_mbps: int               ' e.g., 10000
+'   +latency_ms: float                 ' e.g., 1.2
+'   +jitter_ms: float                  ' e.g., 0.3
+'   +packet_loss_rate: float           ' e.g., 0.01 for 1%
+'   +duplex_mode: string               ' e.g., "full", "half"
+'   +mtu: int                          ' e.g., 1500
+'   +qos_support: boolean              ' e.g., true
+'   +qos_mechanism: string             ' e.g., "DiffServ", "IntServ", "5QI"
+'   +traffic_engineering: string       ' e.g., "segment routing", "TE tunnels"
+'   +encapsulation: string             ' e.g., "VXLAN", "MPLS", "GRE"
+'   +slicing_support: boolean          ' e.g., true
+'   +virtual_link: boolean             ' e.g., true for overlay links
+'   +underlay_type: string             ' e.g., "physical", "VPN", "SD-WAN"
+'   +interfaces_involved: List<string> ' e.g., ["eth0", "eth1", "ge-0/0/1"]
+'   +service_provider: string          ' e.g., "Telecom A", "Own infra"
+'   +redundancy: string                ' e.g., "dual-homed", "ring", "none"
+'   +availability: string              ' e.g., "99.99%"
+'   +synchronization_support: boolean  ' e.g., true
+'   +sync_type: string                 ' e.g., "PTP", "NTP"
+'   +monitoring_enabled: boolean       ' e.g., true
+'   +monitoring_tool: string           ' e.g., "TWAMP", "Y.1731", "Prometheus exporter"
+'   +notes: string                     ' Optional free-form notes
+'   +metadata: Map                     ' Extra key-value annotations
+'   +artifacts: List<RelatedFile>
+' }
 
 
 class GSMA_GSTCharacteristics {
@@ -470,8 +470,8 @@ ExperimentCampaign  -- "*" TestingSession
 
 Environment  -- "0..1" GSMA_GSTCharacteristics
 Environment  -- "0..1" RadioDomain
-Environment  -- "0..1" ComputeDomain
-Environment  -- "0..1" TransportDomain
+' Environment  -- "0..1" ComputeDomain
+' Environment  -- "0..1" TransportDomain
 Environment -- "*" Testbed : "testbed_refs"
 
 TestingSession  -- "1" TestProcedure
