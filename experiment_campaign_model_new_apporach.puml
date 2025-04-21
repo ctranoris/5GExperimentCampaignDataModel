@@ -27,7 +27,8 @@ class ExperimentCampaign {
   +contact_person: ContactInfo           
   +start_time: datetime                 
   +date_archived: datetime            
-  +tags: List<Tag>                
+  +tags: List<Tag>    
+  +testbed: Testbed            
   +metadata: Map        
   +artifacts: List<RelatedFile>
 }
@@ -66,16 +67,31 @@ note right of ExperimentCampaign::id
                 "name": "PPDR",  
                 "description": "Test cases that are under the PPDR vertical"
             }   
+    ],
+
+      "testbed":   {
+    "name":"Patras5G"
+    "organization": "University of Patras"
+    "location":            "Patras, Greece"
+    "description":           "An automated 5G playground...."
+    "access_method":         ["VPN", "OpenSlice Federated Portal"]
+    "available_domains":   ["RAN", "Core", "MEC", "Transport"]
+    "artifacts":[
+          {
+            "id": "file-001"
+            "name": "vpn_file.cfg"
+            "RelatedFile": "/some/path/metrics_output.csv"  
+            "file_type": "CSV"
+            "uploaded_at": "2025-04-01T09:00:00Z"
+          }
     ]
-    "metadata": 
-    {
-      "location": "Patras, Greece",
-      "testbed": "Patras5G"
-    }
+  },
+
     "artifacts": [
       {
         "id": "file-001",
         "name": "metrics_output.csv",
+        "description": "The results of the test",
         "RelatedFile": "/some/path/metrics_output.csv",  
         "file_type": "CSV",
         "uploaded_at": "2025-04-01T09:00:00Z",
@@ -389,6 +405,7 @@ class TestProcedure {
 class RelatedFile {
   +id: string
   +name: string
+  +description: string
   +RelatedFile: string
   +file_type: string
   +uploaded_at: datetime
@@ -400,6 +417,7 @@ note right of RelatedFile::id
   {
     "id": "file-001"
     "name": "metrics_output.csv"
+    "description": "The results of the test"
     "RelatedFile": "/some/path/metrics_output.csv"  
     "file_type": "CSV"
     "uploaded_at": "2025-04-01T09:00:00Z"
@@ -460,7 +478,7 @@ TestingSession  -- "*" MeasurementTool : "measurement_tools"
 ExperimentCampaign--> ContactInfo : contactInfo
 ExperimentCampaign --> Project : Eu project
 ExperimentCampaign --> Tag : Experiment Tags
-
+ExperimentCampaign -- "*" Testbed : "testbed"
 
 '***************************
 '***************************
@@ -524,6 +542,42 @@ note right of Tag::data
   {
     "name": "PPDR",  
     "description": "Test cases that are under the PPDR vertical"
+  }
+end note
+
+
+
+class Testbed {
+  + id: string
+  + name: string                
+  + organization: string      
+  + location: string             
+  + description: string        
+  + access_method: string   
+  + available_domains: List<string> 
+  + metadata: Map            
+  + artifacts: List<RelatedFile>
+}
+
+
+note right of Testbed::data
+  Example:
+  {
+    "name":"Patras5G"
+    "organization": "University of Patras"
+    "location":            "Patras, Greece"
+    "description":           "An automated 5G playground...."
+    "access_method":         ["VPN", "OpenSlice Federated Portal"]
+    "available_domains":   ["RAN", "Core", "MEC", "Transport"]
+    "artifacts":[
+          {
+            "id": "file-001"
+            "name": "vpn_file.cfg"
+            "RelatedFile": "/some/path/metrics_output.csv"  
+            "file_type": "CSV"
+            "uploaded_at": "2025-04-01T09:00:00Z"
+          }
+    ]
   }
 end note
 
