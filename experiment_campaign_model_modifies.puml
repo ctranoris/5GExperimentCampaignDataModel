@@ -144,33 +144,89 @@ end note
 
 
 class RadioDomain {
-  +ran_configuration: string           ' e.g., "O-RAN DU-RU split, F1 interface"
-  +ran_type: string                    ' e.g., "gNB", "CU-DU", "O-RU", "macro", "small cell"
-  +frequency_band: string              ' e.g., "n78", "3.5GHz"
-  +bandwidth_mhz: int                  ' e.g., 100
-  +channel_bandwidth_mhz: int          ' e.g., 20
-  +mimo: string                        ' e.g., "4x4", "8x8", "Massive MIMO"
-  +antenna_type: string                ' e.g., "directional", "omni", "massive-array"
-  +tx_power_dbm: float                 ' e.g., 43.0
-  +scheduler_type: string              ' e.g., "proportional fair", "round robin", "QoS-aware"
-  +slicing_support: boolean            ' e.g., true
-  +supported_qos_profiles: List<string>' e.g., ["5QI-9", "5QI-7"]
-  +fronthaul_technology: string        ' e.g., "eCPRI", "NGFI", "F1"
-  +du_vendor: string                   ' e.g., "Nokia", "Samsung", "Amarisoft"
-  +ru_vendor: string                   ' e.g., "Fujitsu", "NEC", "OpenRAN"
-  +tdd_config: string                  ' e.g., "DL/UL ratio 7:3", optional for TDD bands
-  +ran_slice_id: string                ' e.g., "slice-101"
-  +location: string                    ' e.g., "Indoor lab zone A"
+
+  +radio_setup_id: RadioSetup             ' e.g., "radio-setup-001"
+  
   +mobility_scenario: string           ' e.g., "static", "walking", "vehicular"
   +coverage_radius_m: int             ' e.g., 100
   +interference_profile: string        ' e.g., "low", "moderate", "urban-high"
   +ric_enabled: boolean                ' e.g., true
   +ric_controller: string              ' e.g., "near-RT RIC, ONF SD-RAN"
   +xapps_used: List<string>            ' e.g., ["QoS Optimizer", "RLC Scheduler"]
+
+
+  +frequency_band: string              ' e.g., "n78", "3.5GHz"
+  +bandwidth_mhz: int                  ' e.g., 100
+  +channel_bandwidth_mhz: int          ' e.g., 20
+  +tx_power_dbm: float                 ' e.g., 43.0
+  +scheduler_type: string              ' e.g., "proportional fair", "round robin", "QoS-aware"
+  +slicing_support: boolean            ' e.g., true
+  +supported_qos_profiles: List<string>' e.g., ["5QI-9", "5QI-7"]
+  +tdd_config: string                  ' e.g., "DL/UL ratio 7:3", optional for TDD bands
+  +ran_slice_id: string                ' e.g., "slice-101"
   +metadata: Map                       ' Free-form annotations
   +artifacts: List<RelatedFile>
 }
 
+
+enum RANConfiguration {
+  "O-RAN" 
+  "DU-RU split"
+  "F1 interface"
+  "Centralized RAN (C-RAN)"
+  "Distributed RAN (D-RAN)"
+  "Hybrid RAN"
+}
+
+enum RANType {
+    "gNB"
+    "CU-DU"
+    "O-RU"
+    "macro cell"
+    "small cell"
+}
+
+
+enum MIMOType {
+    "2X2"
+    "4x4"
+    "8x8"
+    "Massive MIMO"
+}
+class RadioSetup{
+  +id: string                     
+  +ran_configuration: RANConfiguration          
+  +ran_type: RANType             
+  +mimo: MIMOType                        
+  +antenna_type: string               
+         ' e.g., "directional", "omni", "massive-array"
+  +fronthaul_technology: string       
+         ' e.g., "eCPRI", "NGFI", "F1"
+  +du_vendor: string                  
+         ' e.g., "Nokia", "Samsung", "Amarisoft"
+  +ru_vendor: string                  
+         ' e.g., "Fujitsu", "NEC", "OpenRAN"
+  +location: string                   
+         ' e.g., "Indoor lab zone A"           
+  +metadata: Map                        ' Additional key-value annotations
+}
+
+
+
+note right of RadioSetup::id
+  Example:
+  {
+  "id" : "radio-setup-001"
+  "ran_configuration":  "O-RAN"
+  "ran_type":  "gNB"
+  "mimo": "2X2"                       
+  "antenna_type":  "directional"
+  "fronthaul_technology": None
+  "du_vendor":  "Amarisoft"
+  "ru_vendor": "OpenRAN"
+  "location":  "Indoor lab zone A"
+  }
+end note
 
 ' class ComputeDomain {
 '   +node_type: string                 ' e.g., "Edge Node", "VM", "Baremetal"
@@ -416,7 +472,8 @@ class MeasurementTool {
 
 class Tag {
   + id: string
-  + data : Map<String, String>
+  + name: string 
+  + description: string
   +metadata: Map                        ' Additional key-value annotations
 }
 note right of Tag::data
@@ -430,12 +487,16 @@ end note
 
 class ContactInfo {
 + id: string
-  + data : Map<String, String>
+  + name: string 
+  + position: string
+  + email: string
+  + phone: string
+    + organization: string
   +metadata: Map                        ' Additional key-value annotations
 }
 
 
-note right of ContactInfo::data
+note right of ContactInfo::id
   Example:
   {
     "name": "Christos Tranoris" 
@@ -449,19 +510,22 @@ end note
 
 class Project {
   + id: string
-  + data : Map<String, String>
+  + name: string 
+  + startDate: string 
+  + call: string 
+  + duration": string 
   +metadata: Map                        ' Additional key-value annotations
 }
 
 
 
-note right of Project::data
+note right of Project::id
   Example:
   {
     "name": "FIDAL"
     "startDate": "Jan 2025"
     "call":"SNS"
-    "duration": "35 months"
+    "duration": "36 months"
   }
 end note
 
@@ -487,4 +551,9 @@ ExperimentCampaign --> Project : Eu procjet
 Testbed --> ContactInfo : contactInfo
 ExperimentCampaign --> ContactInfo : Experiment invlolvment
 
+
+RadioDomain-->RadioSetup
+RadioSetup-->RANConfiguration
+RadioSetup-->RANType
+RadioSetup-->MIMOType
 @enduml
