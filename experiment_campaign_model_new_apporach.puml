@@ -23,13 +23,12 @@ class ExperimentCampaign {
   +version: string                        ' e.g., "v1.2"
   +description: string                    ' Full description of the campaign
   +short_description: string              ' One-line summary
-  +keywords: List<string>                 ' e.g., ["5G", "slicing", "QoS", "RAN"]
   +related_project: Project                ' Reference to Project  class
   +contact_person: ContactInfo            ' Reference to ContactInfo class
   +start_time: datetime                   ' e.g., "2025-04-01T09:00:00Z"
   +end_time: datetime                     ' e.g., "2025-04-15T18:00:00Z"
   +date_archived: datetime                ' e.g., "2025-04-20T10:00:00Z"
-  +tags: List<string>                     ' e.g., ["MEC", "NFV", "testbed"]
+  +tags: List<Tag>                       ' Reference to Tag class
   +metadata: Map                        ' Additional key-value annotations
   +artifacts: List<RelatedFile>
 }
@@ -379,7 +378,7 @@ TestingSession  -- "*" MeasurementTool : "measurement_tools"
 'TODO: ExperimentCampaign *-- "1" ExperimentCampaign_Attributes
 ExperimentCampaign--> ContactInfo : contactInfo
 ExperimentCampaign --> Project : Eu project
-
+ExperimentCampaign --> Tag : Experiment Tags
 
 
 '***************************
@@ -432,6 +431,20 @@ note right of Project::id
 end note
 
 
+
+class Tag {
+  + id: string
+  + name: string 
+  + description: string
+  +metadata: Map                        ' Additional key-value annotations
+}
+note right of Tag::data
+  Example:
+  {
+    "name": "PPDR",  
+    "description": "Test cases that are under the PPDR vertical"
+  }
+end note
 
 '**********************************
 '**********************************
