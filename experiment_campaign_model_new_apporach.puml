@@ -325,11 +325,28 @@ class TestProcedure {
 class RelatedFile {
   +id: string
   +name: string
-  +file_path: string
+  +RelatedFile: string
   +file_type: string
   +uploaded_at: datetime
   +metadata: Map
 }
+
+note right of RelatedFile::id
+  Example:
+  {
+    "id": "file-001"
+    "name": "metrics_output.csv"
+    "RelatedFile": "/some/path/metrics_output.csv"  
+    "file_type": "CSV"
+    "uploaded_at": "2025-04-01T09:00:00Z"
+    "metadata": 
+    {
+      "description": "Contains throughput metrics for all UEs",
+      "size": "2MB"
+    }
+
+  }
+end note
 
 class ObservationPoint {
   +id: string
