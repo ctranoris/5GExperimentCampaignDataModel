@@ -38,37 +38,37 @@ class ExperimentCampaign {
   +tags: List<Tag>                       ' Reference to Tag class
   +metadata: Map                          ' Any extra info (e.g., {"license": "CC-BY"})
 
-  '=== Versioning & Lineage ===
-  +parent_campaign_id: string             ' e.g., "exp-camp-2024-01"
-  +revision_notes: string                 ' e.g., "Added new metrics and mobility tests"
-  +linked_publications: List<string>      ' e.g., ["https://doi.org/10.5281/zenodo.1234567"]
+'   '=== Versioning & Lineage ===
+'   +parent_campaign_id: string             ' e.g., "exp-camp-2024-01"
+'   +revision_notes: string                 ' e.g., "Added new metrics and mobility tests"
+'   +linked_publications: List<string>      ' e.g., ["https://doi.org/10.5281/zenodo.1234567"]
 
-  '=== Design Metadata ===
-  +objective: string                      ' e.g., "Assess reliability of eMBB slice under load"
-  +hypothesis: string                     ' e.g., "QoS drops after 10 UEs on gold slice"
-  +experiment_type: string                ' e.g., "benchmark", "load testing", "validation"
-  +expected_outcome: string               ' e.g., "Latency stays < 20ms with 5 UEs"
+'   '=== Design Metadata ===
+'   +objective: string                      ' e.g., "Assess reliability of eMBB slice under load"
+'   +hypothesis: string                     ' e.g., "QoS drops after 10 UEs on gold slice"
+'   +experiment_type: string                ' e.g., "benchmark", "load testing", "validation"
+'   +expected_outcome: string               ' e.g., "Latency stays < 20ms with 5 UEs"
 
-  '=== Orchestration & Automation ===
-  +deployment_method: string              ' e.g., "manual", "automated via GitLab CI"
-  +config_repository: string              ' e.g., "https://github.com/lab/5g-experiments"
-  +workflow_engine: string                ' e.g., "Argo", "Ansible", "OpenTOSCA", OpenSlice
+'   '=== Orchestration & Automation ===
+'   +deployment_method: string              ' e.g., "manual", "automated via GitLab CI"
+'   +config_repository: string              ' e.g., "https://github.com/lab/5g-experiments"
+'   +workflow_engine: string                ' e.g., "Argo", "Ansible", "OpenTOSCA", OpenSlice
 
-  '=== Licensing & Data Sharing ===
-  +license: string                       ' e.g., "CC-BY-4.0"
-  +data_access_policy: string             ' e.g., "open", "restricted"
-  +external_dataset_links: List<string>   ' e.g., ["https://zenodo.org/record/123456"]
+'   '=== Licensing & Data Sharing ===
+'   +license: string                       ' e.g., "CC-BY-4.0"
+'   +data_access_policy: string             ' e.g., "open", "restricted"
+'   +external_dataset_links: List<string>   ' e.g., ["https://zenodo.org/record/123456"]
 
-  '=== Collaboration & Ownership ===
-  +affiliations: List<string>             ' e.g., ["PNET", "UPatras"]
-  ' +contact_person: string                 ' e.g., "tranoris@example.org"
-  ' +collaborators: List<string>            ' e.g., ["John P.", "Elena M."]
-  +contact_person: ContactInfo                   ' Reference to ContactInfo class
-  +collaborators: List<ContactInfo>                   ' Reference to ContactInfo class
+'   '=== Collaboration & Ownership ===
+'   +affiliations: List<string>             ' e.g., ["PNET", "UPatras"]
+'   ' +contact_person: string                 ' e.g., "tranoris@example.org"
+'   ' +collaborators: List<string>            ' e.g., ["John P.", "Elena M."]
+'   +contact_person: ContactInfo                   ' Reference to ContactInfo class
+'   +collaborators: List<ContactInfo>                   ' Reference to ContactInfo class
 
-  '=== Semantics & Interoperability ===
-  +ontology_tags: List<string>            ' e.g., ["5QI", "mobility", "OpenRAN"]
-  +semantic_annotations: Map              ' e.g., {"5QI": "9", "locationType": "indoor"}
+'   '=== Semantics & Interoperability ===
+'   +ontology_tags: List<string>            ' e.g., ["5QI", "mobility", "OpenRAN"]
+'   +semantic_annotations: Map              ' e.g., {"5QI": "9", "locationType": "indoor"}
   +metadata: Map                        ' Additional key-value annotations
   +artifacts: List<RelatedFile>
 }
@@ -145,7 +145,8 @@ end note
 
 class RadioDomain {
 
-  +radio_setup_id: RadioSetup             ' e.g., "radio-setup-001"
+  +radio_setup: RadioSetup         ' Reference to RadioSetup class
+  +radioConfigParams: RadioConfigurationParameters  
   
   +mobility_scenario: string           ' e.g., "static", "walking", "vehicular"
   +coverage_radius_m: int             ' e.g., 100
@@ -155,15 +156,15 @@ class RadioDomain {
   +xapps_used: List<string>            ' e.g., ["QoS Optimizer", "RLC Scheduler"]
 
 
-  +frequency_band: string              ' e.g., "n78", "3.5GHz"
-  +bandwidth_mhz: int                  ' e.g., 100
-  +channel_bandwidth_mhz: int          ' e.g., 20
-  +tx_power_dbm: float                 ' e.g., 43.0
-  +scheduler_type: string              ' e.g., "proportional fair", "round robin", "QoS-aware"
-  +slicing_support: boolean            ' e.g., true
-  +supported_qos_profiles: List<string>' e.g., ["5QI-9", "5QI-7"]
-  +tdd_config: string                  ' e.g., "DL/UL ratio 7:3", optional for TDD bands
-  +ran_slice_id: string                ' e.g., "slice-101"
+'   +frequency_band: string              ' e.g., "n78", "3.5GHz"
+'   +bandwidth_mhz: int                  ' e.g., 100
+'   +channel_bandwidth_mhz: int          ' e.g., 20
+'   +tx_power_dbm: float                 ' e.g., 43.0
+'   +scheduler_type: string              ' e.g., "proportional fair", "round robin", "QoS-aware"
+'   +slicing_support: boolean            ' e.g., true
+'   +supported_qos_profiles: List<string>' e.g., ["5QI-9", "5QI-7"]
+'   +tdd_config: string                  ' e.g., "DL/UL ratio 7:3", optional for TDD bands
+'   +ran_slice_id: string                ' e.g., "slice-101"
   +metadata: Map                       ' Free-form annotations
   +artifacts: List<RelatedFile>
 }
@@ -228,6 +229,47 @@ note right of RadioSetup::id
   }
 end note
 
+
+
+class RadioConfigurationParameters{
+    +radioConfigParams: List<ConfigurationParameter>
+    +metadata: Map                        ' Additional key-value annotations
+}
+
+note right of RadioConfigurationParameters
+  Example:
+    [
+        {
+            "id":"Config-Param-001"
+            "name": "frequency_band"
+            "description": "The name of the band of the frequency"
+            "Value":"n78"
+            "unit": "String"
+        },
+        {
+            "id":"Config-Param-002"
+            "name": "frequency"
+            "description": "The frequency o"
+            "Value":"3.5"
+            "unit": "Ghz"
+        },
+        {
+            "id":"Config-Param-003"
+            "name": "bandwidth_mhz"
+            "description": "The bandwidth used "
+            "Value":"100"
+            "unit": "Mhz"
+        },
+
+        '   "channel_bandwidth_mhz: int          ' e.g., 20
+        '   "tx_power_dbm: float                 ' e.g., 43.0
+        '   "scheduler_type: string              ' e.g., "proportional fair", "round robin", "QoS-aware"
+        '   "slicing_support": boolean            ' e.g., true
+        '   "supported_qos_profiles": List<string>' e.g., ["5QI-9", "5QI-7"]
+        ' "   tdd_config": string                  ' e.g., "DL/UL ratio 7:3", optional for TDD bands
+    ]           
+  }
+end note
 ' class ComputeDomain {
 '   +node_type: string                 ' e.g., "Edge Node", "VM", "Baremetal"
 '   +architecture: string             ' e.g., "x86_64", "arm64"
@@ -531,6 +573,23 @@ end note
 
 
 
+class ConfigurationParameter {
+  + id: string
+  + name: string
+  + description: string
+  + value: string
+  + unit: string
+}
+note right of ConfigurationParameter::id
+  Example:
+  {
+    "id":"Config-Param-001"
+    "name": "frequency_band"
+    "description": "The name of the band of the frequency"
+    "Value":"n78"
+    "unit": "String"
+  }
+end note
 ExperimentCampaign -- "1" Environment
 ExperimentCampaign  -- "*" TestingSession
 
@@ -553,7 +612,96 @@ ExperimentCampaign --> ContactInfo : Experiment invlolvment
 
 
 RadioDomain-->RadioSetup
+RadioDomain-->RadioConfigurationParameters
 RadioSetup-->RANConfiguration
 RadioSetup-->RANType
 RadioSetup-->MIMOType
+
+
+
+class RadioDomainAttributes_Attributes_ExampleList
+{
+
+ +ran_configuration: string           ' e.g., "O-RAN DU-RU split, F1 interface"
+  +ran_type: string                    ' e.g., "gNB", "CU-DU", "O-RU", "macro", "small cell"
+  +frequency_band: string              ' e.g., "n78", "3.5GHz"
+  +bandwidth_mhz: int                  ' e.g., 100
+  +channel_bandwidth_mhz: int          ' e.g., 20
+  +mimo: string                        ' e.g., "4x4", "8x8", "Massive MIMO"
+  +antenna_type: string                ' e.g., "directional", "omni", "massive-array"
+  +tx_power_dbm: float                 ' e.g., 43.0
+  +scheduler_type: string              ' e.g., "proportional fair", "round robin", "QoS-aware"
+  +slicing_support: boolean            ' e.g., true
+  +supported_qos_profiles: List<string>' e.g., ["5QI-9", "5QI-7"]
+  +fronthaul_technology: string        ' e.g., "eCPRI", "NGFI", "F1"
+  +du_vendor: string                   ' e.g., "Nokia", "Samsung", "Amarisoft"
+  +ru_vendor: string                   ' e.g., "Fujitsu", "NEC", "OpenRAN"
+  +tdd_config: string                  ' e.g., "DL/UL ratio 7:3", optional for TDD bands
+  +ran_slice_id: string                ' e.g., "slice-101"
+  +location: string                    ' e.g., "Indoor lab zone A"
+  +mobility_scenario: string           ' e.g., "static", "walking", "vehicular"
+  +coverage_radius_m: int             ' e.g., 100
+  +interference_profile: string        ' e.g., "low", "moderate", "urban-high"
+  +ric_enabled: boolean                ' e.g., true
+  +ric_controller: string              ' e.g., "near-RT RIC, ONF SD-RAN"
+  +xapps_used: List<string>            ' e.g., ["QoS Optimizer", "RLC Scheduler"]
+}
+
+
+class ExperimentCampaign_Attributes_ExampleList
+{ 
+  +id: string                             ' e.g., "exp-camp-2025-01"
+  +name: string                           ' e.g., "5G QoS Stress Test Campaign"
+  +version: string                        ' e.g., "v1.2"
+  +description: string                    ' Full description of the campaign
+  +short_description: string              ' One-line summary
+  +keywords: List<string>                 ' e.g., ["5G", "slicing", "QoS", "RAN"]
+  +related_project: Project                ' Reference to Project 
+'   +related_project: string                ' e.g., "6G-Xperiment", "EU Horizon 5G"
+'   +owner_name: string                     ' e.g., "Christos T."
+'   +owner_email: string                    ' e.g., "tranoris@example.org"
+  + owner : ContactInfo                   ' Reference to ContactInfo class
+  ' +contributors: List<string>             ' e.g., ["Nikos T.", "Maria D."]
+  +contributors: List<ContactInfo>        ' Reference to ContactInfo class
+  +start_time: datetime                   ' e.g., "2025-04-01T09:00:00Z"
+  +end_time: datetime                     ' e.g., "2025-04-15T18:00:00Z"
+  +date_archived: datetime                ' e.g., "2025-04-20T10:00:00Z"
+'   +tags: List<string>                     ' e.g., ["MEC", "NFV", "testbed"]
+  +tags: List<Tag>                       ' Reference to Tag class
+  +metadata: Map                          ' Any extra info (e.g., {"license": "CC-BY"})
+
+  '=== Versioning & Lineage ===
+  +parent_campaign_id: string             ' e.g., "exp-camp-2024-01"
+  +revision_notes: string                 ' e.g., "Added new metrics and mobility tests"
+  +linked_publications: List<string>      ' e.g., ["https://doi.org/10.5281/zenodo.1234567"]
+
+  '=== Design Metadata ===
+  +objective: string                      ' e.g., "Assess reliability of eMBB slice under load"
+  +hypothesis: string                     ' e.g., "QoS drops after 10 UEs on gold slice"
+  +experiment_type: string                ' e.g., "benchmark", "load testing", "validation"
+  +expected_outcome: string               ' e.g., "Latency stays < 20ms with 5 UEs"
+
+  '=== Orchestration & Automation ===
+  +deployment_method: string              ' e.g., "manual", "automated via GitLab CI"
+  +config_repository: string              ' e.g., "https://github.com/lab/5g-experiments"
+  +workflow_engine: string                ' e.g., "Argo", "Ansible", "OpenTOSCA", OpenSlice
+
+  '=== Licensing & Data Sharing ===
+  +license: string                       ' e.g., "CC-BY-4.0"
+  +data_access_policy: string             ' e.g., "open", "restricted"
+  +external_dataset_links: List<string>   ' e.g., ["https://zenodo.org/record/123456"]
+
+  '=== Collaboration & Ownership ===
+  +affiliations: List<string>             ' e.g., ["PNET", "UPatras"]
+  ' +contact_person: string                 ' e.g., "tranoris@example.org"
+  ' +collaborators: List<string>            ' e.g., ["John P.", "Elena M."]
+  +contact_person: ContactInfo                   ' Reference to ContactInfo class
+  +collaborators: List<ContactInfo>                   ' Reference to ContactInfo class
+
+  '=== Semantics & Interoperability ===
+  +ontology_tags: List<string>            ' e.g., ["5QI", "mobility", "OpenRAN"]
+  +semantic_annotations: Map              ' e.g., {"5QI": "9", "locationType": "indoor"}
+  +metadata: Map                        ' Additional key-value annotations
+  +artifacts: List<RelatedFile>
+}
 @enduml
