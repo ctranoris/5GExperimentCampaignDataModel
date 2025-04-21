@@ -16,18 +16,6 @@
 title Experiment Campaign Data Model
 
 
-class UserMetadata {
-  + data : Map<String, String>
-}
-
-note right of UserMetadata::data
-  Example:
-  {
-    "env": "production",
-    "region": "eu-west-1",
-    "owner": "alice@example.com"
-  }
-end note
 
 class ExperimentCampaign {
   +id: string                             ' e.g., "exp-camp-2025-01"
@@ -37,9 +25,11 @@ class ExperimentCampaign {
   +short_description: string              ' One-line summary
   +keywords: List<string>                 ' e.g., ["5G", "slicing", "QoS", "RAN"]
   +related_project: string                ' e.g., "6G-Xperiment", "EU Horizon 5G"
-  +owner_name: string                     ' e.g., "Christos T."
-  +owner_email: string                    ' e.g., "tranoris@example.org"
-  +contributors: List<string>             ' e.g., ["Nikos T.", "Maria D."]
+'   +owner_name: string                     ' e.g., "Christos T."
+'   +owner_email: string                    ' e.g., "tranoris@example.org"
+  + owner : ContactInfo                   ' Reference to ContactInfo class
+  ' +contributors: List<string>             ' e.g., ["Nikos T.", "Maria D."]
+  +contributors: List<ContactInfo>        ' Reference to ContactInfo class
   +start_time: datetime                   ' e.g., "2025-04-01T09:00:00Z"
   +end_time: datetime                     ' e.g., "2025-04-15T18:00:00Z"
   +date_archived: datetime                ' e.g., "2025-04-20T10:00:00Z"
@@ -64,14 +54,16 @@ class ExperimentCampaign {
   +workflow_engine: string                ' e.g., "Argo", "Ansible", "OpenTOSCA", OpenSlice
 
   '=== Licensing & Data Sharing ===
-  +license: string                        ' e.g., "CC-BY-4.0"
+  +license: string                       ' e.g., "CC-BY-4.0"
   +data_access_policy: string             ' e.g., "open", "restricted"
   +external_dataset_links: List<string>   ' e.g., ["https://zenodo.org/record/123456"]
 
   '=== Collaboration & Ownership ===
   +affiliations: List<string>             ' e.g., ["PNET", "UPatras"]
-  +contact_person: string                 ' e.g., "tranoris@example.org"
-  +collaborators: List<string>            ' e.g., ["John P.", "Elena M."]
+  ' +contact_person: string                 ' e.g., "tranoris@example.org"
+  ' +collaborators: List<string>            ' e.g., ["John P.", "Elena M."]
+  +contact_person: ContactInfo                   ' Reference to ContactInfo class
+  +collaborators: List<ContactInfo>                   ' Reference to ContactInfo class
 
   '=== Semantics & Interoperability ===
   +ontology_tags: List<string>            ' e.g., ["5QI", "mobility", "OpenRAN"]
@@ -430,8 +422,25 @@ class Tag {
 note right of Tag::data
   Example:
   {
-    "name": "PPDR",
-    "description": "Test cases that are under the PPDR vertical"
+    "name": "PPDR",    "description": "Test cases that are under the PPDR vertical"
+  }
+end note
+
+
+class ContactInfo {
++ id: string
+  + data : Map<String, String>
+}
+
+
+note right of ContactInfo::data
+  Example:
+  {
+   "name": "Christos Tranoris" 
+   "position": "CTO"
+   "email": some@wherr.com
+   "phone": "1234567890"
+    "organization": "Yes"
   }
 end note
 
@@ -452,5 +461,7 @@ TestingSession  -- "*" MeasurementTool : "measurement_tools"
 
 
 ExperimentCampaign --> Tag : Experiment Tags
+Testbed --> ContactInfo : contactInfo
+ExperimentCampaign --> ContactInfo : Experiment invlolvment
 
 @enduml
