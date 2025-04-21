@@ -24,7 +24,7 @@ class ExperimentCampaign {
   +description: string                    ' Full description of the campaign
   +short_description: string              ' One-line summary
   +keywords: List<string>                 ' e.g., ["5G", "slicing", "QoS", "RAN"]
-  +related_project: string                ' e.g., "6G-Xperiment", "EU Horizon 5G"
+  +related_project: Project                ' Reference to Project  class
   +contact_person: ContactInfo            ' Reference to ContactInfo class
   +start_time: datetime                   ' e.g., "2025-04-01T09:00:00Z"
   +end_time: datetime                     ' e.g., "2025-04-15T18:00:00Z"
@@ -378,6 +378,9 @@ TestingSession  -- "*" MeasurementTool : "measurement_tools"
 '***************************
 'TODO: ExperimentCampaign *-- "1" ExperimentCampaign_Attributes
 ExperimentCampaign--> ContactInfo : contactInfo
+ExperimentCampaign --> Project : Eu project
+
+
 
 '***************************
 '***************************
@@ -405,6 +408,30 @@ note right of ContactInfo::id
     "organization": "Yes"
   }
 end note
+
+
+class Project {
+  + id: string
+  + name: string 
+  + startDate: string 
+  + call: string 
+  + duration": string 
+  +metadata: Map                        ' Additional key-value annotations
+}
+
+
+
+note right of Project::id
+  Example:
+  {
+    "name": "FIDAL"
+    "startDate": "Jan 2025"
+    "call":"SNS"
+    "duration": "36 months"
+  }
+end note
+
+
 
 '**********************************
 '**********************************
