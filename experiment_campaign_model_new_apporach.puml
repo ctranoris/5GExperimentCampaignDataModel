@@ -107,27 +107,23 @@ note right of ExperimentCampaign::id
   }
 end note
 
+
 class Environment {
-    +id: string                            ' e.g., "env-001"
-    +name: string                          ' e.g., "Indoor Edge RAN Setup"
-    +description: string                   ' Overview of the environment setup
-    +ue_environment_conf: UE_environment_conf
-    +environment_constraints: Environment_Constraints
-    +external_systems: External_Systems
-
-
-'   '=== Experimentation Features ===
-'   +is_virtualized: boolean              ' e.g., true
-'   +edge_location: string                ' e.g., "on-prem edge node"
-'   +time_synchronized: boolean           ' e.g., true (for latency-sensitive tests)
-'   +orchestration_platform: string       ' e.g., "ONAP", "OpenStack"
-
-
-
+  +id: string                            ' e.g., "env-001"
+  +name: string                          ' e.g., "Indoor Edge RAN Setup"
+  +description: string                   ' Overview of the environment setup
   +metadata: Map                        ' Additional key-value annotations
   +artifacts: List<RelatedFile>
 }
 
+note right of Environment::id
+  Example:
+  {
+  "id" : "env-001"
+  "name":  "Indoor Edge RAN Setup"
+  "description": " Overview of the environment setup"
+  }
+end note
 
 
 
@@ -626,9 +622,7 @@ ExperimentCampaign -- "*" Testbed : "testbed"
 5G_Network->RadioConfigurationParameters : "radioConfigParams"
 TestingSession -- "1" Environment
 
-Environment-- UE_environment_conf
-Environment--> Environment_Constraints
-Environment--> External_Systems
+
 '***************************
 '***************************
 'NEW CLASSES
@@ -732,71 +726,7 @@ end note
 
 
 
-class UE_environment_conf{
-  '=== UE Configuration ===
-  +ue_types: List<string>               
-  ' e.g., ["Qualcomm X55", "Samsung S21"]
-  +ue_count: int                       
-   ' e.g., 5
-  +ue_distribution: string             
-   ' e.g., "uniform", "clustered"
-  +mobility_model: string              
-   ' e.g., "static", "pedestrian", "vehicular"
-}
-note right of UE_environment_conf
-  Example:
-  {
-    "ue_types": ["Qualcomm X55", "Samsung S21"]
-    "ue_count": 5
-    "ue_distribution": "uniform"
-    "mobility_model": "static"
-  }
-end note
 
-
-class Environment_Constraints {
-  '=== Environmental Constraints ===
-  +location_type: string                
-  ' e.g., "indoor", "urban", "rural"
-  +distance_from_cell: string           
-  ' e.g., "~5m"
-  +interference_conditions: string      
-  ' e.g., "low", "moderate", "high"
-  +coverage_type: string                
-  ' e.g., "macro", "small cell", "indoor hotspot"
-}
-
-note right of Environment_Constraints
-  Example:
-  {
-    "location_type": "indoor",
-    "distance_from_cell": "~5m",
-    "interference_conditions": "low",
-    "coverage_type": "macro"
-  }
-end note
-
-
-class External_Systems{
-  '=== External Systems ===
-  +external_emulators: List<string>     ' e.g., ["UEsim", "Ns3"]
-  +external_traffic_sources: List<string> ' e.g., ["iperf3", "TrafGen"]
-  +monitoring_stack: string             ' e.g., "Prometheus + Grafana"
-}
-
-
-note right of External_Systems
-    Example
-    {
-        "external_emulators":
-            ["UEsim",
-             "Ns3"]
-        "external_traffic_sources": 
-            ["iperf3",
-             "TrafGen"]
-        "monitoring_stack": "Prometheus + Grafana"
-    }
-end note
 
 
 '**********************************
@@ -870,6 +800,45 @@ class 5G_Network_Attributes {
   +carrier_aggregation: boolean         ' e.g., true
   +mec_enabled: boolean                 ' e.g., true
   +metadata: Map                       ' Free-form annotations
+  +artifacts: List<RelatedFile>
+}
+
+
+class Environment_Attributes {
+  +id: string                            ' e.g., "env-001"
+  +name: string                          ' e.g., "Indoor Edge RAN Setup"
+  +description: string                   ' Overview of the environment setup
+
+  '=== UE Configuration ===
+  +ue_types: List<string>               ' e.g., ["Qualcomm X55", "Samsung S21"]
+  +ue_count: int                        ' e.g., 5
+  +ue_distribution: string              ' e.g., "uniform", "clustered"
+  +mobility_model: string               ' e.g., "static", "pedestrian", "vehicular"
+
+  '=== Environmental Constraints ===
+  +location_type: string                ' e.g., "indoor", "urban", "rural"
+  +distance_from_cell: string           ' e.g., "~5m"
+  +interference_conditions: string      ' e.g., "low", "moderate", "high"
+  +coverage_type: string                ' e.g., "macro", "small cell", "indoor hotspot"
+
+  '=== Network Modes & Features ===
+  +network_architecture: string         ' e.g., "5G-SA", "5G-NSA"
+  +dual_connectivity: boolean           ' e.g., false
+  +carrier_aggregation: boolean         ' e.g., true
+  +mec_enabled: boolean                 ' e.g., true
+
+  '=== Experimentation Features ===
+  +is_virtualized: boolean              ' e.g., true
+  +edge_location: string                ' e.g., "on-prem edge node"
+  +time_synchronized: boolean           ' e.g., true (for latency-sensitive tests)
+  +orchestration_platform: string       ' e.g., "ONAP", "OpenStack"
+
+  '=== External Systems ===
+  +external_emulators: List<string>     ' e.g., ["UEsim", "Ns3"]
+  +external_traffic_sources: List<string> ' e.g., ["iperf3", "TrafGen"]
+  +monitoring_stack: string             ' e.g., "Prometheus + Grafana"
+
+  +metadata: Map                        ' Additional key-value annotations
   +artifacts: List<RelatedFile>
 }
 @enduml
