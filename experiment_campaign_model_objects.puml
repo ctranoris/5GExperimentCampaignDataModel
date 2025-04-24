@@ -1,0 +1,244 @@
+@startuml
+title Experiment Campaign Data Model - Object Diagram
+
+' Instance of ExperimentCampaign
+object expCampaign001 {
+  id = "exp-camp-2025-01"
+  name = "5G QoS Stress Test Campaign"
+  version = "v1.2"
+  description = "Full description of the campaign"
+  short_description = "5G QoS Test"
+  keywords = ["5G", "slicing", "QoS", "RAN"]
+  related_project = "6G-Xperiment"
+  owner_name = "Christos T."
+  owner_email = "tranoris@example.org"
+  contributors = ["Nikos T.", "Maria D."]
+  start_time = "2025-04-01T09:00:00Z"
+  end_time = "2025-04-15T18:00:00Z"
+  date_archived = "2025-04-20T10:00:00Z"
+  tags = ["MEC", "NFV", "testbed"]
+  metadata = {"license": "CC-BY"}
+}
+
+' Instance of Environment
+object env001 {
+  id = "env-001"
+  name = "Indoor Edge RAN Setup"
+  description = "Overview of the environment setup"
+  ue_types = ["Qualcomm X55", "Samsung S21"]
+  ue_count = 5
+  ue_distribution = "uniform"
+  mobility_model = "static"
+  location_type = "indoor"
+  distance_from_cell = "~5m"
+  interference_conditions = "low"
+  coverage_type = "macro"
+  network_architecture = "5G-SA"
+  dual_connectivity = false
+  carrier_aggregation = true
+  mec_enabled = true
+  is_virtualized = true
+  edge_location = "on-prem edge node"
+  time_synchronized = true
+  orchestration_platform = "ONAP"
+  external_emulators = ["UEsim", "Ns3"]
+  external_traffic_sources = ["iperf3", "TrafGen"]
+  monitoring_stack = "Prometheus + Grafana"
+  metadata = {"notes": "Test environment for QoS"}
+}
+
+' Instance of TestingSession
+object testSession001 {
+  id = "sess-001"
+  name = "DL throughput baseline test"
+  description = "Human-readable description"
+  start_time = "2025-04-01T09:00:00Z"
+  end_time = "2025-04-15T18:00:00Z"
+  executed_by = "tranoris@example.org"
+  trigger_method = "manual"
+  measurement_family = "DRB, RRC"
+  ue_profile = "3 UEs, 20 Mbps each, static"
+  traffic_pattern = "DL bulk"
+  qos_profile = "5QI-9"
+  slice_id = "slice101"
+  environment_snapshot = "env-001"
+  network_config_snapshot = "config-001"
+  ran_snapshot = "ran-001"
+  time_sync_status = "in-sync"
+  outcome = "Passed"
+  observed_issues = ["latency spikes"]
+  summary_metrics = {"avg_dl_throughput": "85 Mbps"}
+  metadata = {"notes": "Baseline test"}
+}
+
+' Instance of Testbed
+object testbed001 {
+  id = "testbed-001"
+  name = "Patras5G"
+  organization = "University of Patras"
+  location = "Patras, Greece"
+  description = "5G testbed for QoS experiments"
+  access_method = "VPN"
+  available_domains = ["RAN", "Core", "MEC", "Transport"]
+  metadata = {"notes": "Testbed metadata"}
+}
+
+' Instance of RadioDomain
+object radioDomain001 {
+  ran_configuration = "O-RAN DU-RU split, F1 interface"
+  ran_type = "gNB"
+  frequency_band = "n78"
+  bandwidth_mhz = 100
+  channel_bandwidth_mhz = 20
+  mimo = "4x4"
+  antenna_type = "directional"
+  tx_power_dbm = 43.0
+  scheduler_type = "proportional fair"
+  slicing_support = true
+  supported_qos_profiles = ["5QI-9", "5QI-7"]
+  fronthaul_technology = "eCPRI"
+  du_vendor = "Nokia"
+  ru_vendor = "Fujitsu"
+  tdd_config = "DL/UL ratio 7:3"
+  ran_slice_id = "slice-101"
+  location = "Indoor lab zone A"
+  mobility_scenario = "static"
+  coverage_radius_m = 100
+  interference_profile = "low"
+  ric_enabled = true
+  ric_controller = "near-RT RIC"
+  xapps_used = ["QoS Optimizer", "RLC Scheduler"]
+  metadata = {"notes": "RAN configuration"}
+}
+
+' Instance of ComputeDomain
+object computeDomain001 {
+  node_type = "Edge Node"
+  architecture = "x86_64"
+  cpu_cores = 16
+  cpu_model = "Intel Xeon Gold 6226R"
+  ram_gb = 64
+  storage_gb = 1000
+  storage_type = "NVMe"
+  gpu = true
+  gpu_model = "NVIDIA A100"
+  virtualization = "KVM"
+  container_runtime = "containerd"
+  orchestrator = "Kubernetes"
+  k8s_distribution = "vanilla"
+  numa_enabled = true
+  hugepages_enabled = true
+  isolation_level = "dedicated"
+  metadata = {"notes": "Compute node for edge workloads"}
+}
+
+' Instance of TransportDomain
+object transportDomain001 {
+  type = "fiber"
+  bandwidth_mbps = 10000
+  latency_ms = 1.2
+  jitter_ms = 0.3
+  packet_loss_rate = 0.01
+  duplex_mode = "full"
+  mtu = 1500
+  qos_support = true
+  qos_mechanism = "DiffServ"
+  traffic_engineering = "segment routing"
+  encapsulation = "VXLAN"
+  slicing_support = true
+  virtual_link = true
+  underlay_type = "physical"
+  interfaces_involved = ["eth0", "eth1"]
+  service_provider = "Telecom A"
+  redundancy = "dual-homed"
+  availability = "99.99%"
+  synchronization_support = true
+  sync_type = "PTP"
+  monitoring_enabled = true
+  monitoring_tool = "Prometheus exporter"
+  metadata = {"notes": "Transport domain for 5G core"}
+}
+
+' Instance of GSMA_GSTCharacteristics
+object gstCharacteristics001 {
+  availability = "99.999%"
+  reliability = "99.999%"
+  survivability = "full resilience"
+  energy_efficiency = "optimized"
+  area_of_service = "indoor lab"
+  supported_device_velocity = "pedestrian"
+  ue_density = "1000 devices/km^2"
+  mobility_level = "stationary"
+  latency_upf_to_app_server = "<10ms"
+  jitter = "<2ms"
+  uplink_throughput_per_slice = "10 Mbps"
+  downlink_throughput_per_slice = "100 Mbps"
+  metadata = {"notes": "GST characteristics for eMBB slice"}
+}
+
+' Instance of TestProcedure
+object testProcedure001 {
+  id = "tp-001"
+  name = "UL baseline throughput test"
+  overview = "Brief description of the procedure"
+  steps = ["Step 1: Initialize RAN", "Step 2: Start traffic generator"]
+  toolchain = ["iperf3", "tc"]
+  execution_mode = "automated"
+  script_refs = ["scripts/run-iperf.sh"]
+  trigger_conditions = ["after RAN init"]
+  success_criteria = ["latency < 10ms"]
+  rollback_plan = "Reset DU, reapply config"
+  metadata = {"notes": "Test procedure for UL throughput"}
+}
+
+' Instance of RelatedFile
+object relatedFile001 {
+  id = "file-001"
+  name = "Test Results"
+  file_path = "/results/test-results.json"
+  file_type = "JSON"
+  uploaded_at = "2025-04-15T18:00:00Z"
+  metadata = {"notes": "Test results for session 001"}
+}
+
+' Instance of ObservationPoint
+object observationPoint001 {
+  id = "obs-001"
+  name = "RAN Interface"
+  type = "5G Core Interface"
+  location = "gNB"
+  target_component = "N3"
+  interface_name = "eth0"
+  collection_tool = "tcpdump"
+  description = "Observation point for RAN traffic"
+  metadata = {"notes": "Observation point for RAN"}
+}
+
+' Instance of MeasurementTool
+object measurementTool001 {
+  id = "tool-001"
+  name = "iperf3"
+  type = "active"
+  version = "3.11"
+  description = "Used for UDP throughput testing"
+  target_layer = "network"
+  collection_mode = "inline"
+  output_format = "JSON"
+  metadata = {"notes": "Measurement tool for throughput"}
+}
+
+' Relationships
+expCampaign001 --> env001 : "uses"
+expCampaign001 --> testSession001 : "includes"
+env001 --> testbed001 : "references"
+env001 --> radioDomain001 : "includes"
+radioDomain001 --> computeDomain001 : "connected to"
+computeDomain001 --> transportDomain001 : "uses"
+env001 --> gstCharacteristics001 : "applies to"
+testSession001 --> testProcedure001 : "follows"
+testSession001 --> observationPoint001 : "oberves"
+testSession001 --> measurementTool001 : "uses"
+testProcedure001 --> relatedFile001 : "produces"
+
+
+@enduml
