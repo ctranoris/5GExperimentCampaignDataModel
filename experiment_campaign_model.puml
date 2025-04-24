@@ -17,794 +17,57 @@ title Experiment Campaign Data Model
 
 
 class ExperimentCampaign {
-'=== Basic Attributes ===
-  +id: string                          
-  +name: string                         
-  +version: string                       
-  +description: string                  
-  +short_description: string           
-  +related_project: Project                
-  +contact_person: ContactInfo           
-  +start_time: datetime                 
-  +date_archived: datetime            
-  +tags: List<Tag>    
-  +testbed: Testbed            
-  +metadata: Map        
-  +testSessions: List <TestingSession>
+  +id: string                             ' e.g., "exp-camp-2025-01"
+  +name: string                           ' e.g., "5G QoS Stress Test Campaign"
+  +version: string                        ' e.g., "v1.2"
+  +description: string                    ' Full description of the campaign
+  +short_description: string              ' One-line summary
+  +keywords: List<string>                 ' e.g., ["5G", "slicing", "QoS", "RAN"]
+  +related_project: string                ' e.g., "6G-Xperiment", "EU Horizon 5G"
+  +owner_name: string                     ' e.g., "Christos T."
+  +owner_email: string                    ' e.g., "tranoris@example.org"
+  +contributors: List<string>             ' e.g., ["Nikos T.", "Maria D."]
+  +start_time: datetime                   ' e.g., "2025-04-01T09:00:00Z"
+  +end_time: datetime                     ' e.g., "2025-04-15T18:00:00Z"
+  +date_archived: datetime                ' e.g., "2025-04-20T10:00:00Z"
+  +tags: List<string>                     ' e.g., ["MEC", "NFV", "testbed"]
+  +metadata: Map                          ' Any extra info (e.g., {"license": "CC-BY"})
+
+  '=== Versioning & Lineage ===
+  +parent_campaign_id: string             ' e.g., "exp-camp-2024-01"
+  +revision_notes: string                 ' e.g., "Added new metrics and mobility tests"
+  +linked_publications: List<string>      ' e.g., ["https://doi.org/10.5281/zenodo.1234567"]
+
+  '=== Design Metadata ===
+  +objective: string                      ' e.g., "Assess reliability of eMBB slice under load"
+  +hypothesis: string                     ' e.g., "QoS drops after 10 UEs on gold slice"
+  +experiment_type: string                ' e.g., "benchmark", "load testing", "validation"
+  +expected_outcome: string               ' e.g., "Latency stays < 20ms with 5 UEs"
+
+  '=== Orchestration & Automation ===
+  +deployment_method: string              ' e.g., "manual", "automated via GitLab CI"
+  +config_repository: string              ' e.g., "https://github.com/lab/5g-experiments"
+  +workflow_engine: string                ' e.g., "Argo", "Ansible", "OpenTOSCA", OpenSlice
+
+  '=== Licensing & Data Sharing ===
+  +license: string                        ' e.g., "CC-BY-4.0"
+  +data_access_policy: string             ' e.g., "open", "restricted"
+  +external_dataset_links: List<string>   ' e.g., ["https://zenodo.org/record/123456"]
+
+  '=== Collaboration & Ownership ===
+  +affiliations: List<string>             ' e.g., ["PNET", "UPatras"]
+  +contact_person: string                 ' e.g., "tranoris@example.org"
+  +collaborators: List<string>            ' e.g., ["John P.", "Elena M."]
+
+  '=== Semantics & Interoperability ===
+  +ontology_tags: List<string>            ' e.g., ["5QI", "mobility", "OpenRAN"]
+  +semantic_annotations: Map              ' e.g., {"5QI": "9", "locationType": "indoor"}
+  +metadata: Map                        ' Additional key-value annotations
   +artifacts: List<RelatedFile>
 }
-
-
-note right of ExperimentCampaign::id
-  Example:
-  {
-    "id": "exp-camp-2025-01"
-    "name": "5G QoS Stress Test Campaign"
-    "version":"v1.2"
-    "description": "An experiment campaing aimed to evaluate the testbed"
-    "short_description": "testbed evaluation"
-    "related_project":   {
-            "name": "FIDAL"
-            "startDate": "Jan 2025"
-            "call":"SNS"
-            "duration": "36 months"
-        }
-    "contact_person":   {
-            "name": "Christos Tranoris" 
-            "position": "CTO"
-            "email": "some@where.com"
-            "phone": "+301234567890"
-            "organization": "Yes"
-        }
-    "start_time": "2025-04-01T09:00:00Z"
-    "end_time": "2025-04-15T18:00:00Z"
-    "date_archived": "2025-04-20T10:00:00Z"
-    "tags": [
-          {
-            "name": "SPEEDTEST",  
-            "description": "speedtest executioon"
-         },
-            {
-                "name": "PPDR",  
-                "description": "Test cases that are under the PPDR vertical"
-            }   
-    ],
-
-      "testbed":   {
-    "name":"Patras5G"
-    "organization": "University of Patras"
-    "location":            "Patras, Greece"
-    "description":           "An automated 5G playground...."
-    "access_method":         ["VPN", "OpenSlice Federated Portal"]
-    "available_domains":   ["RAN", "Core", "MEC", "Transport"]
-    "artifacts":[
-          {
-            "id": "file-001"
-            "name": "vpn_file.cfg"
-            "RelatedFile": "/some/path/metrics_output.csv"  
-            "file_type": "CSV"
-            "uploaded_at": "2025-04-01T09:00:00Z"
-          }
-    ]
-  },
-
-    "artifacts": [
-      {
-        "id": "file-001",
-        "name": "metrics_output.csv",
-        "description": "The results of the test",
-        "RelatedFile": "/some/path/metrics_output.csv",  
-        "file_type": "CSV",
-        "uploaded_at": "2025-04-01T09:00:00Z",
-        "metadata": 
-        {
-          "description": "Contains throughput metrics for all UEs",
-          "size": "2MB"
-        }
-      }
-    ]
-
-  }
-end note
 
 
 class Environment {
-  +id: string                            ' e.g., "env-001"
-  +name: string                          ' e.g., "Indoor Edge RAN Setup"
-  +description: string                   ' Overview of the environment setup
-  +metadata: Map                        ' Additional key-value annotations
-  +artifacts: List<RelatedFile>
-}
-
-note right of Environment::id
-  Example:
-  {
-  "id" : "env-001"
-  "name":  "Indoor Edge RAN Setup"
-  "description": " Overview of the environment setup"
-  }
-end note
-
-
-
-class Testbed {
-  +id: string
-  +name: string                 ' e.g., "Patras5G", "YYY", "XXX"
-  +organization: string         ' e.g., "University of Patras"
-  +location: string             ' e.g., "Patras, Greece"
-  +description: string          ' Free-text, what the testbed provides
-  +access_method: string        ' e.g., "VPN", "OpenSlice Federated Portal"
-  +available_domains: List<string> ' e.g., ["RAN", "Core", "MEC", "Transport"]
-  +metadata: Map                        ' Additional key-value annotations
-  +artifacts: List<RelatedFile>
-}
-
-
-
-class 5G_Network {
-  +radio_setup: RadioSetup         ' Reference to RadioSetup class
-  +radioConfigParams: RadioConfigurationParameters  
-  +5G_NetworkMetrics: List <5G_NetworkMetrics>
-  +metadata: Map                       ' Free-form annotations
-  +artifacts: List<RelatedFile>
-}
-
-
-note right of 5G_Network
-  Example:
-  {
-    "radio_setup": {
-      "id": "radio-setup-001"
-      "ran_configuration":  "O-RAN"
-      "ran_type":  "gNB"
-      "mimo": "2X2"                       
-      "antenna_type":  "directional"ß
-      "fronthaul_technology": None
-      "du_vendor":  "Amarisoft"
-      "ru_vendor": "OpenRAN"
-      "location":  "Indoor lab zone A"
-    }
-    "radioConfigParams":[
-        {
-            "id":"Config-Param-001"
-            "name": "frequency_band"
-            "description": "The name of the band of the frequency"
-            "Value":"n78"
-            "unit": "String"
-        },
-        {
-            "id":"Config-Param-002"
-            "name": "frequency"
-            "description": "The frequency o"
-            "Value":"3.5"
-            "unit": "Ghz"
-        },
-        {
-            ...
-        }
-    ],
-      "5G_NetworkMetrics":  [
-        {
-            "id":"Radio-Metric-001"
-            "name": "cell_bandwidth"
-            "description": "The total cell bandwidth"
-            "Value":"320"
-            "unit": "Mbps"
-            "node": "CELL"
-            "node_id":"cell_01"
-        },
-        {
-            "id":"Radio-Metric-002"
-            "name": "ue_cqi"
-            "description": "The CQI as defined by the UE"
-            "Value":"12"
-            "unit": "int"
-            "node": "UE"
-            "node_id":"someImsi"
-        },
-        {
-            "id":"Radio-Metric-003"
-            "name": "number_of_connected_ues"
-            "description": "number_of_connected_ues"
-            "Value":"3"
-            "unit": "int"
-            "node": "CORE"
-            "node_id":"CORE_IP"
-        }
-
-    ]    
-  }
-end note
-class RadioSetup{
-  +id: string                     
-  +ran_configuration: string
-    '  "O-RAN" ,"DU-RU split","F1 interface","Centralized RAN (C-RAN)","Distributed RAN (D-RAN)","Hybrid RAN"
-        
-  +ran_type: String
-    '    "gNB" ,"CU-DU",    "O-RU","macro cell","small cell"         
-  +mimo: String
-    '  "2X2" ,"4x4" , "8x8",   "Massive MIMO"                        
-  +antenna_type: string               
-         ' e.g., "directional", "omni", "massive-array"
-  +fronthaul_technology: string       
-         ' e.g., "eCPRI", "NGFI", "F1"
-  +du_vendor: string                  
-         ' e.g., "Nokia", "Samsung", "Amarisoft"
-  +ru_vendor: string                  
-         ' e.g., "Fujitsu", "NEC", "OpenRAN"
-  +location: string                   
-         ' e.g., "Indoor lab zone A"           
-  +metadata: Map                        ' Additional key-value annotations
-}
-
-
-
-note right of RadioSetup::id
-  Example:
-  {
-  "id" : "radio-setup-001"
-  "ran_configuration":  "O-RAN"
-  "ran_type":  "gNB"
-  "mimo": "2X2"                       
-  "antenna_type":  "directional"
-  "fronthaul_technology": None
-  "du_vendor":  "Amarisoft"
-  "ru_vendor": "OpenRAN"
-  "location":  "Indoor lab zone A"
-  }
-end note
-
-
-class 5G_NetworkMetrics{
-    +radioMetrics List<RadioMetric>
-    +metadata: Map              ' Additional key-value annotations
-}
-note right of 5G_NetworkMetrics
-  Example:
-    [
-        {
-            "id":"Radio-Metric-001"
-            "name": "cell_bandwidth"
-            "description": "The total cell bandwidth"
-            "Value":"320"
-            "unit": "Mbps"
-            "node": "CELL"
-            "node_id":"cell_01"
-        },
-        {
-            "id":"Radio-Metric-002"
-            "name": "ue_cqi"
-            "description": "The CQI as defined by the UE"
-            "Value":"12"
-            "unit": "int"
-            "node": "UE"
-            "node_id":"someImsi"
-        },
-        {
-            "id":"Radio-Metric-003"
-            "name": "number_of_connected_ues"
-            "description": "number_of_connected_ues"
-            "Value":"3"
-            "unit": "int"
-            "node": "CORE"
-            "node_id":"CORE_IP"
-        }
-
-    ]           
-  }
-end note
-
-
-class RadioConfigurationParameters{
-    +radioConfigParams: List<ConfigurationParameter>
-    +metadata: Map                        ' Additional key-value annotations
-}
-
-note right of RadioConfigurationParameters
-  Example:
-    [
-        {
-            "id":"Config-Param-001"
-            "name": "frequency_band"
-            "description": "The name of the band of the frequency"
-            "Value":"n78"
-            "unit": "String"
-        },
-        {
-            "id":"Config-Param-002"
-            "name": "frequency"
-            "description": "The frequency o"
-            "Value":"3.5"
-            "unit": "Ghz"
-        },
-        {
-            "id":"Config-Param-003"
-            "name": "bandwidth_mhz"
-            "description": "The bandwidth used "
-            "Value":"100"
-            "unit": "Mhz"
-        },
-
-        '   "channel_bandwidth_mhz: int          ' e.g., 20
-        '   "tx_power_dbm: float                 ' e.g., 43.0
-        '   "scheduler_type: string              ' e.g., "proportional fair", "round robin", "QoS-aware"
-        '   "slicing_support": boolean            ' e.g., true
-        '   "supported_qos_profiles": List<string>' e.g., ["5QI-9", "5QI-7"]
-        ' "   tdd_config": string                  ' e.g., "DL/UL ratio 7:3", optional for TDD bands
-    ]           
-  }
-end note
-
-' class ComputeDomain {
-'   +node_type: string                 ' e.g., "Edge Node", "VM", "Baremetal"
-'   +architecture: string             ' e.g., "x86_64", "arm64"
-'   +cpu_cores: int                   ' e.g., 16
-'   +cpu_model: string                ' e.g., "Intel Xeon Gold 6226R"
-'   +ram_gb: int                      ' e.g., 64
-'   +storage_gb: int                  ' e.g., 1000
-'   +storage_type: string             ' e.g., "NVMe", "HDD", "Ceph Block"
-'   +gpu: boolean                     ' e.g., true
-'   +gpu_model: string                ' e.g., "NVIDIA A100", optional
-'   +virtualization: string           ' e.g., "KVM", "Docker"
-'   +container_runtime: string        ' e.g., "containerd", "Docker", "CRI-O"
-'   +orchestrator: string             ' e.g., "Kubernetes", "OpenStack", "openSlice", "ONAP", "OSM"
-'   +k8s_distribution: string         ' e.g., "vanilla", "MicroK8s", "OpenShift"
-'   +numa_enabled: boolean            ' e.g., true
-'   +hugepages_enabled: boolean       ' e.g., true
-'   +isolation_level: string          ' e.g., "shared", "dedicated"
-'   +performance_profile: string      ' e.g., "realtime", "balanced"
-'   +os_image: string                 ' e.g., "Ubuntu 22.04 LTS", "Red Hat 8"
-'   +kernel_version: string           ' e.g., "5.15.0-72-generic"
-'   +hypervisor_type: string          ' e.g., "QEMU", "none"
-'   +cloud_provider: string           ' e.g., "OpenStack", "AWS", "Private"
-'   +metadata: Map                    ' Any extra info
-'   +artifacts: List<RelatedFile>
-' }
-
-
-' class TransportDomain {
-'   +type: string                       ' e.g., "fiber", "microwave", "satellite", "VXLAN"
-'   +bandwidth_mbps: int               ' e.g., 10000
-'   +latency_ms: float                 ' e.g., 1.2
-'   +jitter_ms: float                  ' e.g., 0.3
-'   +packet_loss_rate: float           ' e.g., 0.01 for 1%
-'   +duplex_mode: string               ' e.g., "full", "half"
-'   +mtu: int                          ' e.g., 1500
-'   +qos_support: boolean              ' e.g., true
-'   +qos_mechanism: string             ' e.g., "DiffServ", "IntServ", "5QI"
-'   +traffic_engineering: string       ' e.g., "segment routing", "TE tunnels"
-'   +encapsulation: string             ' e.g., "VXLAN", "MPLS", "GRE"
-'   +slicing_support: boolean          ' e.g., true
-'   +virtual_link: boolean             ' e.g., true for overlay links
-'   +underlay_type: string             ' e.g., "physical", "VPN", "SD-WAN"
-'   +interfaces_involved: List<string> ' e.g., ["eth0", "eth1", "ge-0/0/1"]
-'   +service_provider: string          ' e.g., "Telecom A", "Own infra"
-'   +redundancy: string                ' e.g., "dual-homed", "ring", "none"
-'   +availability: string              ' e.g., "99.99%"
-'   +synchronization_support: boolean  ' e.g., true
-'   +sync_type: string                 ' e.g., "PTP", "NTP"
-'   +monitoring_enabled: boolean       ' e.g., true
-'   +monitoring_tool: string           ' e.g., "TWAMP", "Y.1731", "Prometheus exporter"
-'   +notes: string                     ' Optional free-form notes
-'   +metadata: Map                     ' Extra key-value annotations
-'   +artifacts: List<RelatedFile>
-' }
-
-
-' class GSMA_GSTCharacteristics {
-
-'   '=== Availability & Reliability ===
-'   +availability: string                   ' e.g., "99.999%"
-'   +reliability: string                    ' e.g., "99.999%"
-'   +survivability: string                  ' e.g., "full resilience"
-'   +energy_efficiency: string              ' e.g., "optimized"
-
-'   '=== Area, Mobility & Velocity ===
-'   +area_of_service: string                ' e.g., "indoor lab", "urban zone"
-'   +supported_device_velocity: string      ' e.g., "pedestrian", "vehicular"
-'   +ue_density: string                     ' e.g., "1000 devices/km^2"
-'   +mobility_level: string                 ' e.g., "stationary", "high-speed"
-
-'   '=== Latency, Delay, Timing ===
-'   +latency_upf_to_app_server: string      ' e.g., "<10ms"
-'   +delay_tolerance: string                ' e.g., "tolerant", "intolerant"
-'   +jitter: string                         ' e.g., "<2ms"
-'   +synchronicity: string                  ' e.g., "tight", "loose"
-'   +application_latency_requirement: string' e.g., "<20ms"
-'   +time_synchronization: string           ' e.g., "PTP", "NTP", "none"
-
-'   '=== Throughput & Capacity ===
-'   +uplink_throughput_per_slice: string    ' e.g., "10 Mbps"
-'   +uplink_max_throughput_per_ue: string   ' e.g., "2 Mbps"
-'   +downlink_throughput_per_slice: string  ' e.g., "100 Mbps"
-'   +downlink_max_throughput_per_ue: string ' e.g., "25 Mbps"
-'   +capacity: string                       ' e.g., "500 GB/month"
-'   +area_traffic_capacity: string          ' e.g., "5 Mbps/m^2"
-
-'   '=== Security & Privacy ===
-'   +security_level: string                 ' e.g., "standard", "enhanced"
-'   +user_management_openness: string       ' e.g., "open", "controlled"
-'   +nssaa_support: boolean                 ' e.g., true
-
-'   '=== Session & QoS ===
-'   +slice_qos: string                      ' e.g., "Gold", "Best Effort"
-'   +session_continuity: string             ' e.g., "always", "best effort"
-'   +simultaneous_use_of_slice: boolean     ' e.g., true
-'   +max_number_of_pdu_sessions: int        ' e.g., 50
-'   +max_ues_with_pdu_or_pdn: int           ' e.g., 100
-
-'   '=== Slice Characteristics ===
-'   +isolation_level: string                ' e.g., "high"
-'   +network_slice_type: string             ' e.g., "eMBB", "URLLC"
-'   +slice_service_type: string             ' e.g., "industrial-automation"
-'   +slice_customer_type: string            ' e.g., "enterprise"
-'   +slice_lifecycle: string                ' e.g., "long", "on-demand"
-'   +slice_differentiator: string           ' e.g., "slice101"
-'   +resource_sharing_level: string         ' e.g., "shared", "dedicated"
-'   +access_type: string                    ' e.g., "3GPP", "non-3GPP"
-'   +radio_spectrum: string                 ' e.g., "3.5GHz", "licensed"
-
-'   '=== Traffic & Protocol Support ===
-'   +non_ip_traffic_support: boolean        ' e.g., false
-'   +group_communication_support: boolean   ' e.g., true
-'   +communication_pattern: string          ' e.g., "unicast", "broadcast"
-'   +max_supported_packet_size: string      ' e.g., "1500 bytes"
-'   +vxpc_scheduled_mode: boolean           ' e.g., false
-'   +vxpc_parameter_provisioning: string    ' e.g., "static", "dynamic"
-'   +pdu_set_support: boolean               ' e.g., false
-
-'   '=== Application & Service Features ===
-'   +mission_critical_support: boolean      ' e.g., false
-'   +mmtel_support: boolean                 ' e.g., false
-'   +mps_support: boolean                   ' e.g., true
-'   +location_service_support: boolean      ' e.g., true
-'   +location_accuracy: string              ' e.g., "<1m"
-'   +positioning_support: boolean           ' e.g., true
-'   +positioning_accuracy: string           ' e.g., "<5m"
-
-'   '=== Analytics & Monitoring ===
-'   +performance_monitoring: boolean        ' e.g., true
-'   +performance_prediction: boolean        ' e.g., false
-'   +monitoring_and_analytics: boolean      ' e.g., true
-
-'   '=== UE & Network Limits ===
-'   +max_number_of_ues: int                 ' e.g., 100
-'   +connection_count: int                  ' e.g., 200
-'   +network_functions_owned_by_customer: boolean ' e.g., false
-'   +supported_data_networks: List<string>  ' e.g., ["internet", "private5g"]
-'   +ssc_mode_support: List<string>         ' e.g., ["SSC mode 1", "SSC mode 2"]
-
-'   '=== Resource Management ===
-'   +priority_level: string                 ' e.g., "high"
-'   +preemption_capability: string          ' e.g., "may preempt"
-'   +preemption_vulnerability: string       ' e.g., "not preemptible"
-
-'   '=== Scheduling & Timing Constraints ===
-'   +availability_time_window: string       ' e.g., "24/7", "09:0018:00"
-
-'   '=== Other / Metadata ===
-'   +metadata: Map                          ' Free-form data
-'   +artifacts: List<RelatedFile>
-' }
-
-
-
-class TestingSession {
-  +id: string                            ' e.g., "sess-001"
-  +name: string                          ' e.g., "DL throughput baseline test"
-  +description: string                   ' Human-readable description
-  +start_time: datetime                   ' e.g., "2025-04-01T09:00:00Z"
-  +end_time: datetime                     ' e.g., "2025-04-15T18:00:00Z"
-  
-  '=== Execution Details ===
-  +executed_by: string                   ' e.g., "tranoris@example.org"
-  +trigger_method: string                ' e.g., "manual", "API", "CI/CD pipeline"
-  +measurement_family: string            ' from 3GPP 28.552 e.g., "DRB, RRC."
-
-  '=== Session Parameters ===
-  +ue_profile: string                    ' e.g., "3 UEs, 20 Mbps each, static"
-  +traffic_pattern: string               ' e.g., "DL bulk", "UL random burst"
-  +qos_profile: string                   ' e.g., "5QI-9"
-  +slice_id: string                      ' e.g., "slice101"
-
-  '=== Test Conditions & Setup ===
-  +environment: Environment          ' e.g., Git SHA or file path of infra config
-'   +network_config_snapshot: string       ' e.g., export of routing/slice/QoS config
-  +5G_netwowrk_config: string                  ' e.g., RAN config (MIMO, bandwidth, scheduler)
-  +time_sync_status: string              ' e.g., "in-sync", "drifted", "unknown"
-
-  '=== Outcome Summary ===
-  +outcome: string                       ' e.g., "Passed", "Degraded", "Failed"
-  +observed_issues: List<string>         ' e.g., ["latency spikes", "UE3 disconnects"]
-  +summary_metrics: Map                  ' e.g., {"avg_dl_throughput": "85 Mbps"}
-  
-  +metadata: Map                        ' Additional key-value annotations
-  +artifacts: List<RelatedFile>
-}
-
-
-' class TestProcedure {
-'   +id: string                            ' e.g., "tp-001"
-'   +name: string                          ' e.g., "UL baseline throughput test"
-'   +overview: string                      ' Brief description of the procedure
-'   +steps: List<string>                   ' Ordered list of human-readable steps
-'   +toolchain: List<string>               ' e.g., ["iperf3", "tc", "vnf-monitor"]
-'   +execution_mode: string                ' e.g., "manual", "automated", "hybrid"
-'   +script_refs: List<string>             ' e.g., ["scripts/run-iperf.sh", "ansible/test.yml"]
-'   +trigger_conditions: List<string>      ' e.g., ["after RAN init", "UE attach confirmed"]
-'   +success_criteria: List<string>        ' e.g., ["latency < 10ms", "no packet loss"]
-'   +rollback_plan: string                 ' e.g., "Reset DU, reapply config"
-'   +expected_duration_min: int            ' e.g., 15
-'   +depends_on: List<string>              ' e.g., ["infra-init", "slice-deploy"]
-'   +metadata: Map                        ' Additional key-value annotations
-'   +artifacts: List<RelatedFile>
-' }
-
-
-class RelatedFile {
-  +id: string
-  +name: string
-  +description: string
-  +RelatedFile: string
-  +file_type: string
-  +uploaded_at: datetime
-  +metadata: Map
-}
-
-note right of RelatedFile::id
-  Example:
-  {
-    "id": "file-001"
-    "name": "metrics_output.csv"
-    "description": "The results of the test"
-    "RelatedFile": "/some/path/metrics_output.csv"  
-    "file_type": "CSV"
-    "uploaded_at": "2025-04-01T09:00:00Z"
-    "metadata": 
-    {
-      "description": "Contains throughput metrics for all UEs",
-      "size": "2MB"
-    }
-
-  }
-end note
-
-' class ObservationPoint {
-'   +id: string
-'   +name: string
-'   +type: string                     ' e.g., "5G Core Interface", "RAN Entity", "Log File"
-'   +location: string                 ' Logical or physical location
-'   +target_component: string         ' e.g., "N3", "N6", "gNB", "UPF", "K8s Node"
-'   +interface_name: string           ' e.g., "eth0", "N3", "Gi", "s1"
-'   +collection_tool: string          ' e.g., "tcpdump", "Prometheus exporter"
-'   +description: string              ' Free-text description
-'   +metadata: Map                        ' Additional key-value annotations
-'   +artifacts: List<RelatedFile>
-' }
-
-' class MeasurementTool {
-'   +id: string
-'   +name: string                     ' e.g., "iperf3", "tcpdump", "Prometheus"
-'   +type: string                     ' e.g., "active", "passive", "synthetic", "telemetry"
-'   +version: string                  ' e.g., "3.11"
-'   +description: string              ' e.g., "Used for UDP throughput testing"
-'   +target_layer: string             ' e.g., "network", "application", "radio"
-'   +collection_mode: string          ' e.g., "inline", "agent-based", "sidecar"
-'   +output_format: string            ' e.g., "JSON", "CSV", "PCAP", "Prometheus format"
-'   +metadata: Map
-' }
-
-
-' ExperimentCampaign -- "1" Environment
-ExperimentCampaign  -- "*" TestingSession
-
-' Environment  -- "0..1" GSMA_GSTCharacteristics
-Environment  -- "0..1" 5G_Network
-' Environment  -- "0..1" ComputeDomain
-' Environment  -- "0..1" TransportDomain
-' Environment -- "*" Testbed : "testbed_refs"
-
-' TestingSession  -- "1" TestProcedure
-' TestingSession  -- "*" ObservationPoint : "observations"
-' TestingSession  -- "*" MeasurementTool : "measurement_tools"
-
-'***************************
-'***************************
-'NEW CONNECTIONS
-'***************************
-'***************************
-'TODO: ExperimentCampaign *-- "1" ExperimentCampaign_Attributes
-ExperimentCampaign--> ContactInfo : contactInfo
-ExperimentCampaign --> Project : Eu project
-ExperimentCampaign --> Tag : Experiment Tags
-ExperimentCampaign -- "*" Testbed : "testbed"
-5G_Network->5G_NetworkMetrics : "radioMetrics"
-5G_Network->RadioConfigurationParameters : "radioConfigParams"
-TestingSession -- "1" Environment
-
-
-'***************************
-'***************************
-'NEW CLASSES
-'***************************
-'***************************
-class ContactInfo {
-+ id: string
-  + name: string 
-  + position: string
-  + email: string
-  + phone: string
-  + organization: string
-  + metadata: Map                        ' Additional key-value annotations
-}
-
-
-note right of ContactInfo::id
-  Example:
-  {
-    "name": "Christos Tranoris" 
-    "position": "CTO"
-    "email": "some@where.com"
-    "phone": "+301234567890"
-    "organization": "Yes"
-  }
-end note
-
-
-class Project {
-  + id: string
-  + name: string 
-  + startDate: string 
-  + call: string 
-  + duration": string 
-  +metadata: Map                        ' Additional key-value annotations
-}
-
-
-
-note right of Project::id
-  Example:
-  {
-    "name": "FIDAL"
-    "startDate": "Jan 2025"
-    "call":"SNS"
-    "duration": "36 months"
-  }
-end note
-
-
-
-class Tag {
-  + id: string
-  + name: string 
-  + description: string
-  +metadata: Map                        ' Additional key-value annotations
-}
-note right of Tag::data
-  Example:
-  {
-    "name": "PPDR",  
-    "description": "Test cases that are under the PPDR vertical"
-  }
-end note
-
-
-
-class Testbed {
-  + id: string
-  + name: string                
-  + organization: string      
-  + location: string             
-  + description: string        
-  + access_method: string   
-  + available_domains: List<string> 
-  + metadata: Map            
-  + artifacts: List<RelatedFile>
-}
-
-
-note right of Testbed::data
-  Example:
-  {
-    "name":"Patras5G"
-    "organization": "University of Patras"
-    "location":            "Patras, Greece"
-    "description":           "An automated 5G playground...."
-    "access_method":         ["VPN", "OpenSlice Federated Portal"]
-    "available_domains":   ["RAN", "Core", "MEC", "Transport"]
-    "artifacts":[
-          {
-            "id": "file-001"
-            "name": "vpn_file.cfg"
-            "RelatedFile": "/some/path/metrics_output.csv"  
-            "file_type": "CSV"
-            "uploaded_at": "2025-04-01T09:00:00Z"
-          }
-    ]
-  }
-end note
-
-
-
-
-
-
-'**********************************
-'**********************************
-'ATTRIBUTE CLASSES
-'**********************************
-'**********************************
-class ExperimentCampaign_Attributes {
-    +collaborators: List<ContactInfo>       ' Reference to ContactInfo class
-    +contributors: List<ContactInfo>        ' Reference to ContactInfo class
-    '=== Versioning & Lineage ===
-    +parent_campaign_id: string             ' e.g., "exp-camp-2024-01"
-    +revision_notes: string                 ' e.g., "Added new metrics and mobility tests"
-    +linked_publications: List<string>      ' e.g., ["https://doi.org/10.5281/zenodo.1234567"]
-
-    '=== Design Metadata ===
-    +objective: string                      ' e.g., "Assess reliability of eMBB slice under load"
-    +hypothesis: string                     ' e.g., "QoS drops after 10 UEs on gold slice"
-    +experiment_type: string                ' e.g., "benchmark", "load testing", "validation"
-    +expected_outcome: string               ' e.g., "Latency stays < 20ms with 5 UEs"
-
-    '=== Orchestration & Automation ===
-    +deployment_method: string              ' e.g., "manual", "automated via GitLab CI"
-    +config_repository: string              ' e.g., "https://github.com/lab/5g-experiments"
-    +workflow_engine: string                ' e.g., "Argo", "Ansible", "OpenTOSCA", OpenSlice
-
-    '=== Licensing & Data Sharing ===
-    +license: string                        ' e.g., "CC-BY-4.0"
-    +data_access_policy: string             ' e.g., "open", "restricted"
-    +external_dataset_links: List<string>   ' e.g., ["https://zenodo.org/record/123456"]
-
-    '=== Collaboration & Ownership ===
-    +affiliations: List<string>             ' e.g., ["PNET", "UPatras"]
-    +contact_person: string                 ' e.g., "tranoris@example.org"
-    +collaborators: List<string>            ' e.g., ["John P.", "Elena M."]
-
-    '=== Semantics & Interoperability ===
-    +ontology_tags: List<string>            ' e.g., ["5QI", "mobility", "OpenRAN"]
-    +semantic_annotations: Map              ' e.g., {"5QI": "9", "locationType": "indoor"}
-}
-
-
-
-class 5G_Network_Attributes {
-  +ran_configuration: string           ' e.g., "O-RAN DU-RU split, F1 interface"
-  +ran_type: string                    ' e.g., "gNB", "CU-DU", "O-RU", "macro", "small cell"
-  +frequency_band: string              ' e.g., "n78", "3.5GHz"
-  +bandwidth_mhz: int                  ' e.g., 100
-  +channel_bandwidth_mhz: int          ' e.g., 20
-  +mimo: string                        ' e.g., "4x4", "8x8", "Massive MIMO"
-  +antenna_type: string                ' e.g., "directional", "omni", "massive-array"
-  +tx_power_dbm: float                 ' e.g., 43.0
-  +scheduler_type: string              ' e.g., "proportional fair", "round robin", "QoS-aware"
-  +slicing_support: boolean            ' e.g., true
-  +supported_qos_profiles: List<string>' e.g., ["5QI-9", "5QI-7"]
-  +fronthaul_technology: string        ' e.g., "eCPRI", "NGFI", "F1"
-  +du_vendor: string                   ' e.g., "Nokia", "Samsung", "Amarisoft"
-  +ru_vendor: string                   ' e.g., "Fujitsu", "NEC", "OpenRAN"
-  +tdd_config: string                  ' e.g., "DL/UL ratio 7:3", optional for TDD bands
-  +ran_slice_id: string                ' e.g., "slice-101"
-  +location: string                    ' e.g., "Indoor lab zone A"
-  +mobility_scenario: string           ' e.g., "static", "walking", "vehicular"
-  +coverage_radius_m: int             ' e.g., 100
-  +interference_profile: string        ' e.g., "low", "moderate", "urban-high"
-  +ric_enabled: boolean                ' e.g., true
-  +ric_controller: string              ' e.g., "near-RT RIC, ONF SD-RAN"
-  +xapps_used: List<string>            ' e.g., ["QoS Optimizer", "RLC Scheduler"]
-    '=== Network Modes & Features ===
-  +network_architecture: string         ' e.g., "5G-SA", "5G-NSA"
-  +dual_connectivity: boolean           ' e.g., false
-  +carrier_aggregation: boolean         ' e.g., true
-  +mec_enabled: boolean                 ' e.g., true
-  +metadata: Map                       ' Free-form annotations
-  +artifacts: List<RelatedFile>
-}
-
-
-class Environment_Attributes {
   +id: string                            ' e.g., "env-001"
   +name: string                          ' e.g., "Indoor Edge RAN Setup"
   +description: string                   ' Overview of the environment setup
@@ -841,4 +104,305 @@ class Environment_Attributes {
   +metadata: Map                        ' Additional key-value annotations
   +artifacts: List<RelatedFile>
 }
+
+
+
+class Testbed {
+  +id: string
+  +name: string                 ' e.g., "Patras5G", "YYY", "XXX"
+  +organization: string         ' e.g., "University of Patras"
+  +location: string             ' e.g., "Patras, Greece"
+  +description: string          ' Free-text, what the testbed provides
+  +access_method: string        ' e.g., "VPN", "OpenSlice Federated Portal"
+  +available_domains: List<string> ' e.g., ["RAN", "Core", "MEC", "Transport"]
+  +metadata: Map                        ' Additional key-value annotations
+  +artifacts: List<RelatedFile>
+}
+
+
+class RadioDomain {
+  +ran_configuration: string           ' e.g., "O-RAN DU-RU split, F1 interface"
+  +ran_type: string                    ' e.g., "gNB", "CU-DU", "O-RU", "macro", "small cell"
+  +frequency_band: string              ' e.g., "n78", "3.5GHz"
+  +bandwidth_mhz: int                  ' e.g., 100
+  +channel_bandwidth_mhz: int          ' e.g., 20
+  +mimo: string                        ' e.g., "4x4", "8x8", "Massive MIMO"
+  +antenna_type: string                ' e.g., "directional", "omni", "massive-array"
+  +tx_power_dbm: float                 ' e.g., 43.0
+  +scheduler_type: string              ' e.g., "proportional fair", "round robin", "QoS-aware"
+  +slicing_support: boolean            ' e.g., true
+  +supported_qos_profiles: List<string>' e.g., ["5QI-9", "5QI-7"]
+  +fronthaul_technology: string        ' e.g., "eCPRI", "NGFI", "F1"
+  +du_vendor: string                   ' e.g., "Nokia", "Samsung", "Amarisoft"
+  +ru_vendor: string                   ' e.g., "Fujitsu", "NEC", "OpenRAN"
+  +tdd_config: string                  ' e.g., "DL/UL ratio 7:3", optional for TDD bands
+  +ran_slice_id: string                ' e.g., "slice-101"
+  +location: string                    ' e.g., "Indoor lab zone A"
+  +mobility_scenario: string           ' e.g., "static", "walking", "vehicular"
+  +coverage_radius_m: int             ' e.g., 100
+  +interference_profile: string        ' e.g., "low", "moderate", "urban-high"
+  +ric_enabled: boolean                ' e.g., true
+  +ric_controller: string              ' e.g., "near-RT RIC, ONF SD-RAN"
+  +xapps_used: List<string>            ' e.g., ["QoS Optimizer", "RLC Scheduler"]
+  +metadata: Map                       ' Free-form annotations
+  +artifacts: List<RelatedFile>
+}
+
+
+class ComputeDomain {
+  +node_type: string                 ' e.g., "Edge Node", "VM", "Baremetal"
+  +architecture: string             ' e.g., "x86_64", "arm64"
+  +cpu_cores: int                   ' e.g., 16
+  +cpu_model: string                ' e.g., "Intel Xeon Gold 6226R"
+  +ram_gb: int                      ' e.g., 64
+  +storage_gb: int                  ' e.g., 1000
+  +storage_type: string             ' e.g., "NVMe", "HDD", "Ceph Block"
+  +gpu: boolean                     ' e.g., true
+  +gpu_model: string                ' e.g., "NVIDIA A100", optional
+  +virtualization: string           ' e.g., "KVM", "Docker"
+  +container_runtime: string        ' e.g., "containerd", "Docker", "CRI-O"
+  +orchestrator: string             ' e.g., "Kubernetes", "OpenStack", "openSlice", "ONAP", "OSM"
+  +k8s_distribution: string         ' e.g., "vanilla", "MicroK8s", "OpenShift"
+  +numa_enabled: boolean            ' e.g., true
+  +hugepages_enabled: boolean       ' e.g., true
+  +isolation_level: string          ' e.g., "shared", "dedicated"
+  +performance_profile: string      ' e.g., "realtime", "balanced"
+  +os_image: string                 ' e.g., "Ubuntu 22.04 LTS", "Red Hat 8"
+  +kernel_version: string           ' e.g., "5.15.0-72-generic"
+  +hypervisor_type: string          ' e.g., "QEMU", "none"
+  +cloud_provider: string           ' e.g., "OpenStack", "AWS", "Private"
+  +metadata: Map                    ' Any extra info
+  +artifacts: List<RelatedFile>
+}
+
+
+class TransportDomain {
+  +type: string                       ' e.g., "fiber", "microwave", "satellite", "VXLAN"
+  +bandwidth_mbps: int               ' e.g., 10000
+  +latency_ms: float                 ' e.g., 1.2
+  +jitter_ms: float                  ' e.g., 0.3
+  +packet_loss_rate: float           ' e.g., 0.01 for 1%
+  +duplex_mode: string               ' e.g., "full", "half"
+  +mtu: int                          ' e.g., 1500
+  +qos_support: boolean              ' e.g., true
+  +qos_mechanism: string             ' e.g., "DiffServ", "IntServ", "5QI"
+  +traffic_engineering: string       ' e.g., "segment routing", "TE tunnels"
+  +encapsulation: string             ' e.g., "VXLAN", "MPLS", "GRE"
+  +slicing_support: boolean          ' e.g., true
+  +virtual_link: boolean             ' e.g., true for overlay links
+  +underlay_type: string             ' e.g., "physical", "VPN", "SD-WAN"
+  +interfaces_involved: List<string> ' e.g., ["eth0", "eth1", "ge-0/0/1"]
+  +service_provider: string          ' e.g., "Telecom A", "Own infra"
+  +redundancy: string                ' e.g., "dual-homed", "ring", "none"
+  +availability: string              ' e.g., "99.99%"
+  +synchronization_support: boolean  ' e.g., true
+  +sync_type: string                 ' e.g., "PTP", "NTP"
+  +monitoring_enabled: boolean       ' e.g., true
+  +monitoring_tool: string           ' e.g., "TWAMP", "Y.1731", "Prometheus exporter"
+  +notes: string                     ' Optional free-form notes
+  +metadata: Map                     ' Extra key-value annotations
+  +artifacts: List<RelatedFile>
+}
+
+
+class GSMA_GSTCharacteristics {
+
+  '=== Availability & Reliability ===
+  +availability: string                   ' e.g., "99.999%"
+  +reliability: string                    ' e.g., "99.999%"
+  +survivability: string                  ' e.g., "full resilience"
+  +energy_efficiency: string              ' e.g., "optimized"
+
+  '=== Area, Mobility & Velocity ===
+  +area_of_service: string                ' e.g., "indoor lab", "urban zone"
+  +supported_device_velocity: string      ' e.g., "pedestrian", "vehicular"
+  +ue_density: string                     ' e.g., "1000 devices/km^2"
+  +mobility_level: string                 ' e.g., "stationary", "high-speed"
+
+  '=== Latency, Delay, Timing ===
+  +latency_upf_to_app_server: string      ' e.g., "<10ms"
+  +delay_tolerance: string                ' e.g., "tolerant", "intolerant"
+  +jitter: string                         ' e.g., "<2ms"
+  +synchronicity: string                  ' e.g., "tight", "loose"
+  +application_latency_requirement: string' e.g., "<20ms"
+  +time_synchronization: string           ' e.g., "PTP", "NTP", "none"
+
+  '=== Throughput & Capacity ===
+  +uplink_throughput_per_slice: string    ' e.g., "10 Mbps"
+  +uplink_max_throughput_per_ue: string   ' e.g., "2 Mbps"
+  +downlink_throughput_per_slice: string  ' e.g., "100 Mbps"
+  +downlink_max_throughput_per_ue: string ' e.g., "25 Mbps"
+  +capacity: string                       ' e.g., "500 GB/month"
+  +area_traffic_capacity: string          ' e.g., "5 Mbps/m^2"
+
+  '=== Security & Privacy ===
+  +security_level: string                 ' e.g., "standard", "enhanced"
+  +user_management_openness: string       ' e.g., "open", "controlled"
+  +nssaa_support: boolean                 ' e.g., true
+
+  '=== Session & QoS ===
+  +slice_qos: string                      ' e.g., "Gold", "Best Effort"
+  +session_continuity: string             ' e.g., "always", "best effort"
+  +simultaneous_use_of_slice: boolean     ' e.g., true
+  +max_number_of_pdu_sessions: int        ' e.g., 50
+  +max_ues_with_pdu_or_pdn: int           ' e.g., 100
+
+  '=== Slice Characteristics ===
+  +isolation_level: string                ' e.g., "high"
+  +network_slice_type: string             ' e.g., "eMBB", "URLLC"
+  +slice_service_type: string             ' e.g., "industrial-automation"
+  +slice_customer_type: string            ' e.g., "enterprise"
+  +slice_lifecycle: string                ' e.g., "long", "on-demand"
+  +slice_differentiator: string           ' e.g., "slice101"
+  +resource_sharing_level: string         ' e.g., "shared", "dedicated"
+  +access_type: string                    ' e.g., "3GPP", "non-3GPP"
+  +radio_spectrum: string                 ' e.g., "3.5GHz", "licensed"
+
+  '=== Traffic & Protocol Support ===
+  +non_ip_traffic_support: boolean        ' e.g., false
+  +group_communication_support: boolean   ' e.g., true
+  +communication_pattern: string          ' e.g., "unicast", "broadcast"
+  +max_supported_packet_size: string      ' e.g., "1500 bytes"
+  +vxpc_scheduled_mode: boolean           ' e.g., false
+  +vxpc_parameter_provisioning: string    ' e.g., "static", "dynamic"
+  +pdu_set_support: boolean               ' e.g., false
+
+  '=== Application & Service Features ===
+  +mission_critical_support: boolean      ' e.g., false
+  +mmtel_support: boolean                 ' e.g., false
+  +mps_support: boolean                   ' e.g., true
+  +location_service_support: boolean      ' e.g., true
+  +location_accuracy: string              ' e.g., "<1m"
+  +positioning_support: boolean           ' e.g., true
+  +positioning_accuracy: string           ' e.g., "<5m"
+
+  '=== Analytics & Monitoring ===
+  +performance_monitoring: boolean        ' e.g., true
+  +performance_prediction: boolean        ' e.g., false
+  +monitoring_and_analytics: boolean      ' e.g., true
+
+  '=== UE & Network Limits ===
+  +max_number_of_ues: int                 ' e.g., 100
+  +connection_count: int                  ' e.g., 200
+  +network_functions_owned_by_customer: boolean ' e.g., false
+  +supported_data_networks: List<string>  ' e.g., ["internet", "private5g"]
+  +ssc_mode_support: List<string>         ' e.g., ["SSC mode 1", "SSC mode 2"]
+
+  '=== Resource Management ===
+  +priority_level: string                 ' e.g., "high"
+  +preemption_capability: string          ' e.g., "may preempt"
+  +preemption_vulnerability: string       ' e.g., "not preemptible"
+
+  '=== Scheduling & Timing Constraints ===
+  +availability_time_window: string       ' e.g., "24/7", "09:0018:00"
+
+  '=== Other / Metadata ===
+  +metadata: Map                          ' Free-form data
+  +artifacts: List<RelatedFile>
+}
+
+
+
+class TestingSession {
+  +id: string                            ' e.g., "sess-001"
+  +name: string                          ' e.g., "DL throughput baseline test"
+  +description: string                   ' Human-readable description
+  +start_time: datetime                   ' e.g., "2025-04-01T09:00:00Z"
+  +end_time: datetime                     ' e.g., "2025-04-15T18:00:00Z"
+  
+  '=== Execution Details ===
+  +executed_by: string                   ' e.g., "tranoris@example.org"
+  +trigger_method: string                ' e.g., "manual", "API", "CI/CD pipeline"
+  +measurement_family: string            ' from 3GPP 28.552 e.g., "DRB, RRC."
+
+  '=== Session Parameters ===
+  +ue_profile: string                    ' e.g., "3 UEs, 20 Mbps each, static"
+  +traffic_pattern: string               ' e.g., "DL bulk", "UL random burst"
+  +qos_profile: string                   ' e.g., "5QI-9"
+  +slice_id: string                      ' e.g., "slice101"
+
+  '=== Test Conditions & Setup ===
+  +environment_snapshot: string          ' e.g., Git SHA or file path of infra config
+  +network_config_snapshot: string       ' e.g., export of routing/slice/QoS config
+  +ran_snapshot: string                  ' e.g., RAN config (MIMO, bandwidth, scheduler)
+  +time_sync_status: string              ' e.g., "in-sync", "drifted", "unknown"
+
+  '=== Outcome Summary ===
+  +outcome: string                       ' e.g., "Passed", "Degraded", "Failed"
+  +observed_issues: List<string>         ' e.g., ["latency spikes", "UE3 disconnects"]
+  +summary_metrics: Map                  ' e.g., {"avg_dl_throughput": "85 Mbps"}
+  
+  +metadata: Map                        ' Additional key-value annotations
+  +artifacts: List<RelatedFile>
+}
+
+
+class TestProcedure {
+  +id: string                            ' e.g., "tp-001"
+  +name: string                          ' e.g., "UL baseline throughput test"
+  +overview: string                      ' Brief description of the procedure
+  +steps: List<string>                   ' Ordered list of human-readable steps
+  +toolchain: List<string>               ' e.g., ["iperf3", "tc", "vnf-monitor"]
+  +execution_mode: string                ' e.g., "manual", "automated", "hybrid"
+  +script_refs: List<string>             ' e.g., ["scripts/run-iperf.sh", "ansible/test.yml"]
+  +trigger_conditions: List<string>      ' e.g., ["after RAN init", "UE attach confirmed"]
+  +success_criteria: List<string>        ' e.g., ["latency < 10ms", "no packet loss"]
+  +rollback_plan: string                 ' e.g., "Reset DU, reapply config"
+  +expected_duration_min: int            ' e.g., 15
+  +depends_on: List<string>              ' e.g., ["infra-init", "slice-deploy"]
+  +metadata: Map                        ' Additional key-value annotations
+  +artifacts: List<RelatedFile>
+}
+
+
+class RelatedFile {
+  +id: string
+  +name: string
+  +file_path: string
+  +file_type: string
+  +uploaded_at: datetime
+  +metadata: Map
+}
+
+class ObservationPoint {
+  +id: string
+  +name: string
+  +type: string                     ' e.g., "5G Core Interface", "RAN Entity", "Log File"
+  +location: string                 ' Logical or physical location
+  +target_component: string         ' e.g., "N3", "N6", "gNB", "UPF", "K8s Node"
+  +interface_name: string           ' e.g., "eth0", "N3", "Gi", "s1"
+  +collection_tool: string          ' e.g., "tcpdump", "Prometheus exporter"
+  +description: string              ' Free-text description
+  +metadata: Map                        ' Additional key-value annotations
+  +artifacts: List<RelatedFile>
+}
+
+class MeasurementTool {
+  +id: string
+  +name: string                     ' e.g., "iperf3", "tcpdump", "Prometheus"
+  +type: string                     ' e.g., "active", "passive", "synthetic", "telemetry"
+  +version: string                  ' e.g., "3.11"
+  +description: string              ' e.g., "Used for UDP throughput testing"
+  +target_layer: string             ' e.g., "network", "application", "radio"
+  +collection_mode: string          ' e.g., "inline", "agent-based", "sidecar"
+  +output_format: string            ' e.g., "JSON", "CSV", "PCAP", "Prometheus format"
+  +metadata: Map
+}
+
+
+ExperimentCampaign -- "1" Environment
+ExperimentCampaign  -- "*" TestingSession
+
+Environment  -- "0..1" GSMA_GSTCharacteristics
+Environment  -- "0..1" RadioDomain
+Environment  -- "0..1" ComputeDomain
+Environment  -- "0..1" TransportDomain
+Environment -- "*" Testbed : "testbed_refs"
+
+TestingSession  -- "1" TestProcedure
+TestingSession  -- "*" ObservationPoint : "observations"
+TestingSession  -- "*" MeasurementTool : "measurement_tools"
+
+
+
 @enduml
