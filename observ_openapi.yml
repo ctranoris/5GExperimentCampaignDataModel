@@ -1,0 +1,739 @@
+openapi: 3.0.0
+info:
+  title: Experiment Campaign Data Model API
+  description: API for managing Experiment Campaigns, Environments, and related entities.
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+
+paths:
+  /experiment-campaigns:
+    get:
+      summary: Get all Experiment Campaigns
+      responses:
+        '200':
+          description: A list of Experiment Campaigns
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExperimentCampaign'
+    post:
+      summary: Create a new Experiment Campaign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentCampaign'
+      responses:
+        '201':
+          description: Experiment Campaign created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentCampaign'
+
+  /experiment-campaigns/{id}:
+    get:
+      summary: Get an Experiment Campaign by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Experiment Campaign details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperimentCampaign'
+    put:
+      summary: Update an Experiment Campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperimentCampaign'
+      responses:
+        '200':
+          description: Experiment Campaign updated
+    delete:
+      summary: Delete an Experiment Campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Experiment Campaign deleted
+
+  /environments:
+    get:
+      summary: Get all Environments
+      responses:
+        '200':
+          description: A list of Environments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Environment'
+    post:
+      summary: Create a new Environment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Environment'
+      responses:
+        '201':
+          description: Environment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+
+  /environments/{id}:
+    get:
+      summary: Get an Environment by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Environment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+    put:
+      summary: Update an Environment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Environment'
+      responses:
+        '200':
+          description: Environment updated
+    delete:
+      summary: Delete an Environment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Environment deleted
+
+  /testing-sessions:
+    get:
+      tags:
+        - TestingSessions
+      summary: Get all Testing Sessions
+      responses:
+        '200':
+          description: A list of Testing Sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TestingSession'
+    post:
+      tags:
+        - TestingSessions
+      summary: Create a new Testing Session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestingSession'
+      responses:
+        '201':
+          description: Testing Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestingSession'
+
+  /testing-sessions/{id}:
+    get:
+      tags:
+        - TestingSessions
+      summary: Get a Testing Session by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Testing Session details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestingSession'
+    put:
+      tags:
+        - TestingSessions
+      summary: Update a Testing Session
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestingSession'
+      responses:
+        '200':
+          description: Testing Session updated
+    delete:
+      tags:
+        - TestingSessions
+      summary: Delete a Testing Session
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Testing Session deleted
+
+  /testbeds:
+    get:
+      summary: Get all Testbeds
+      responses:
+        '200':
+          description: A list of Testbeds
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Testbed'
+    post:
+      summary: Create a new Testbed
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Testbed'
+      responses:
+        '201':
+          description: Testbed created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Testbed'
+
+  /testbeds/{id}:
+    get:
+      summary: Get a Testbed by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Testbed details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Testbed'
+    put:
+      summary: Update a Testbed
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Testbed'
+      responses:
+        '200':
+          description: Testbed updated
+    delete:
+      summary: Delete a Testbed
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Testbed deleted
+
+  /metrics:
+    get:
+      summary: Get all Metrics
+      responses:
+        '200':
+          description: A list of Metrics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Metric'
+    post:
+      summary: Create a new Metric
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Metric'
+      responses:
+        '201':
+          description: Metric created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metric'
+
+  /metrics/{id}:
+    get:
+      summary: Get a Metric by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Metric details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metric'
+    put:
+      summary: Update a Metric
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Metric'
+      responses:
+        '200':
+          description: Metric updated
+    delete:
+      summary: Delete a Metric
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Metric deleted
+
+components:
+  schemas:
+    ExperimentCampaign:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "exp-camp-2025-01"
+        name:
+          type: string
+          example: "5G QoS Stress Test Campaign"
+        version:
+          type: string
+          example: "v1.2"
+        description:
+          type: string
+          example: "Full description of the campaign"
+        short_description:
+          type: string
+          example: "5G QoS Test"
+        related_project:
+          $ref: '#/components/schemas/Project'
+        contact_person:
+          $ref: '#/components/schemas/ContactInfo'
+        contributors:
+          type: string
+          example: "Nikos T., Maria D."
+        start_time:
+          type: string
+          format: date-time
+          example: "2025-04-01T09:00:00Z"
+        end_time:
+          type: string
+          format: date-time
+          example: "2025-04-15T18:00:00Z"
+        date_archived:
+          type: string
+          format: date-time
+          example: "2025-04-20T10:00:00Z"
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        testing_sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestingSession'
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        license:
+          type: string
+          example: "CC-BY-4.0"
+        data_access_policy:
+          type: string
+          example: "open"
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedFile'
+
+    Environment:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "env-001"
+        name:
+          type: string
+          example: "Indoor Edge RAN Setup"
+        description:
+          type: string
+          example: "Overview of the environment setup"
+        ue_devices:
+          type: array
+          items:
+            type: string
+          example: ["Qualcomm X55", "Samsung S21"]
+        ue_count:
+          type: integer
+          example: 5
+        mobility_model:
+          type: string
+          example: "static"
+        location_type:
+          type: string
+          example: "indoor"
+        distance_from_cell:
+          type: string
+          example: "~5m"
+        interference_conditions:
+          type: string
+          example: "low"
+        coverage_type:
+          type: string
+          example: "macro"
+        network_architecture:
+          type: string
+          example: "5G-SA"
+        mec_enabled:
+          type: boolean
+          example: true
+        is_virtualized:
+          type: boolean
+          example: true
+        edge_location:
+          type: string
+          example: "on-prem edge node"
+        external_traffic_tools:
+          type: array
+          items:
+            type: string
+          example: ["iperf3", "TrafGen"]
+        monitoring_stack:
+          type: array
+          items:
+            type: string
+          example: ["Prometheus", "Grafana"]
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedFile'
+
+    Testbed:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "testbed-001"
+        name:
+          type: string
+          example: "Patras5G"
+        organization:
+          type: string
+          example: "University of Patras"
+        location:
+          type: string
+          example: "Patras, Greece"
+        description:
+          type: string
+          example: "5G testbed for QoS experiments"
+        access_method:
+          type: string
+          example: "VPN"
+        available_domains:
+          type: array
+          items:
+            type: string
+          example: ["RAN", "Core", "MEC", "Transport"]
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedFile'
+    Metric:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "metric-001"
+        name:
+          type: string
+          example: "Bandwidth"
+        description:
+          type: string
+          example: "The bandwidth of the network"
+        value:
+          type: string
+          example: "100 Mbps"
+        unit:
+          type: string
+          example: "Mbps"
+        node:
+          type: string
+          example: "Core"
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "proj-001"
+        name:
+          type: string
+          example: "6G-Xperiment"
+        description:
+          type: string
+          example: "A European Union Horizon 2020 project"
+        start_date:
+          type: string
+          format: date
+          example: "2025-01-01"
+        end_date:
+          type: string
+          format: date
+          example: "2027-12-31"
+        funding_source:
+          type: string
+          example: "Horizon Europe"
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    
+    RelatedFile:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "file-001"
+        name:
+          type: string
+          example: "Test Results"
+        file_path:
+          type: string
+          example: "/results/test-results.json"
+        file_type:
+          type: string
+          example: "JSON"
+        uploaded_at:
+          type: string
+          format: date-time
+          example: "2025-04-15T18:00:00Z"
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+
+    ContactInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "contact-001"
+        name:
+          type: string
+          example: "Christos Tranoris"
+        email:
+          type: string
+          example: "tranoris@example.org"
+        organization:
+          type: string
+          example: "University of Patras"
+        role:
+          type: string
+          example: "Principal Investigator"
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    TestingSession:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "sess-001"
+        name:
+          type: string
+          example: "DL throughput baseline test"
+        description:
+          type: string
+          example: "Human-readable description of the session"
+        start_time:
+          type: string
+          format: date-time
+          example: "2025-04-01T09:00:00Z"
+        end_time:
+          type: string
+          format: date-time
+          example: "2025-04-15T18:00:00Z"
+        executed_by:
+          type: string
+          example: "tranoris@example.org"
+        trigger_method:
+          type: string
+          example: "manual"
+        measurement_family:
+          type: string
+          example: "DRB, RRC"
+        ue_profile:
+          type: string
+          example: "3 UEs, 20 Mbps each, static"
+        traffic_pattern:
+          type: string
+          example: "DL bulk"
+        qos_profile:
+          type: string
+          example: "5QI-9"
+        slice_id:
+          type: string
+          example: "slice101"
+        environment_snapshot:
+          type: string
+          example: "env-001"
+        network_config_snapshot:
+          type: string
+          example: "config-001"
+        ran_snapshot:
+          type: string
+          example: "ran-001"
+        time_sync_status:
+          type: string
+          example: "in-sync"
+        outcome:
+          type: string
+          example: "Passed"
+        observed_issues:
+          type: array
+          items:
+            type: string
+          example: ["latency spikes"]
+        summary_metrics:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            avg_dl_throughput: "85 Mbps"
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            notes: "Baseline test"
+
+    Tag:
+      type: object
+      properties:
+        tag_id:
+          type: integer
+          example: 1
+        tag_name:
+          type: string
+          example: "Sample Tag"
+        tag_description:
+          type: string
+          example: "This is a sample tag description."
+        is_active:
+          type: boolean
+          example: true
+        created_by:
+          type: string
+          example: "admin"
