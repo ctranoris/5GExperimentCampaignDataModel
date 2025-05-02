@@ -30,7 +30,7 @@ class ExperimentCampaign {
   +end_time: datetime                     ' e.g., "2025-04-15T18:00:00Z"
   +date_archived: datetime                ' e.g., "2025-04-20T10:00:00Z"
   +tags: List<Tag>            ' e.g., ["5QI", "mobility", "OpenRAN"]
-  +metadata: Map                          ' Any extra info (e.g., {"license": "CC-BY"})
+  +metadata: Map        <string,string>                   ' Any extra info (e.g., {"license": "CC-BY"})
   '=== Licensing & Data Sharing ===
   +license: string                        ' e.g., "CC-BY-4.0"
   +data_access_policy: string             ' e.g., "open", "restricted", "shared"
@@ -74,7 +74,7 @@ class Testbed {
   +description: string          ' Free-text, what the testbed provides
   +access_method: string        ' e.g., "VPN", "OpenSlice Federated Portal"
   +available_domains: List<string> ' e.g., ["RAN", "Core", "MEC", "Transport"]
-  +metadata: Map                        ' Additional key-value annotations
+  +metadata: Map           <string,string>              ' Additional key-value annotations
   +artifacts: List<RelatedFile>
 }
 
@@ -99,7 +99,7 @@ class RadioDomain {
   +ric_controller: string              ' e.g., "near-RT RIC, ONF SD-RAN"
   +xapps_used: List<string>            ' e.g., ["QoS Optimizer", "RLC Scheduler"]
   +components:List <ComponentIdentifier> ' .gnbs, cores, ues
-  +metadata: Map                       ' Free-form annotations
+  +metadata: Map     <string,string>                   ' Free-form annotations
   +artifacts: List<RelatedFile>
 }
 
@@ -115,20 +115,20 @@ class ComputeDomain {
   +gpu: boolean                     ' e.g., true
   +os_image: string                 ' e.g., "Ubuntu 22.04 LTS", "Red Hat 8"
   +components:List <ComponentIdentifier> ' servers, GPUS, mecs, etc, 
-  +metadata: Map                    ' Any extra info
+  +metadata: Map    <string,string>                 ' Any extra info
   +artifacts: List<RelatedFile>
 }
 
 
 class TransportDomain {
   +type: string                       ' e.g., "fiber", "microwave", "satellite", "VXLAN"
-  +description" striong         ' e.g., "Transport network for 5G core,cSATELITE, OQTECH"
+  +description" string         ' e.g., "Transport network for 5G core,cSATELITE, OQTECH"
   +bandwidth_mbps: int               ' e.g., 10000
   +duplex_mode: string               ' e.g., "full", "half"
   +mtu: int                          ' e.g., 1500
   +encapsulation: string             ' e.g., "VXLAN", "MPLS", "GRE"
   +components:List <ComponentIdentifier> ' switches, routers,
-  +metadata: Map                     ' Extra key-value annotations
+  +metadata: Map      <string,string>                ' Extra key-value annotations
   +artifacts: List<RelatedFile>
 }
 
@@ -211,7 +211,7 @@ class GSMA_GSTCharacteristics {
   '=== Scheduling & Timing Constraints ===
   +availability_time_window: string       ' e.g., "24/7", "09:0018:00"
   '=== Other / Metadata ===
-  +metadata: Map                          ' Free-form data
+  +metadata: Map       <string,string>                    ' Free-form data
   +artifacts: List<RelatedFile>
 }
 
@@ -228,7 +228,7 @@ class TestingSession {
   +observed_issues: List<string>         ' e.g., ["latency spikes", "UE3 disconnects"]
   +sessions_tools: List<MeasurementTool>                  ' e.g., {"iperfm tcpdump}
   +metrics: List<Metric>                ' e.g., ["dl_throughput", "latency"]
-  +metadata: Map                        ' Additional key-value annotations
+  +metadata: Map    <string,string>                     ' Additional key-value annotations
   +artifacts: List<RelatedFile>
 }
 
@@ -246,7 +246,7 @@ class TestProcedure {
   +rollback_plan: string                 ' e.g., "Reset DU, reapply config"
   +expected_duration_min: int            ' e.g., 15
   +depends_on: List<string>              ' e.g., ["infra-init", "slice-deploy"]
-  +metadata: Map                        ' Additional key-value annotations
+  +metadata: Map    <string,string>                     ' Additional key-value annotations
   +artifacts: List<RelatedFile>
 }
 
@@ -269,7 +269,7 @@ class ObservationPoint {
   +interface_name: string           ' e.g., "eth0", "N3", "Gi", "s1"
   +collection_tool: string          ' e.g., "tcpdump", "Prometheus exporter"
   +description: string              ' Free-text description
-  +metadata: Map                        ' Additional key-value annotations
+  +metadata: Map        <string,string>                 ' Additional key-value annotations
   +artifacts: List<RelatedFile>
 }
 
@@ -282,7 +282,7 @@ class MeasurementTool {
   +target_layer: string             ' e.g., "network", "application", "radio"
   +collection_mode: string          ' e.g., "inline", "agent-based", "sidecar"
   +output_format: string            ' e.g., "JSON", "CSV", "PCAP", "Prometheus format"
-  +metadata: Map
+  +metadata: Map <string,string> 
 }
 
 
@@ -294,7 +294,7 @@ class Project {
   + startDate: string 
   + call: string 
   + duration": string 
-  +metadata: Map                        ' Additional key-value annotations
+  +metadata: Map      <string,string>                   ' Additional key-value annotations
 }
 class ContactInfo {
   +id: string
@@ -302,13 +302,13 @@ class ContactInfo {
   +email: string
   +organization: string
   +role: string
-  +metadata: Map
+  +metadata: Map <string,string> 
 }
 class Tag {
   +id: string
   +name: string
   +description: string
-  +metadata: Map
+  +metadata: Map <string,string> 
 }
 
 
@@ -332,7 +332,7 @@ class Metric {
   + value: string  'the value
   + unit: string   'mhz, msecm mbps
   + node: string  'e.g., "cell", "core", "ue", "CPU", Memory"
-    +metadata: Map
+    +metadata: Map <String, String>
     +artifacts: List<RelatedFile>
 }
 
@@ -356,10 +356,10 @@ TestingSession  -- "*" MeasurementTool : "measurement_tools"
 
 
 TestingSession -- "1" Environment:session_environment
-TestingSession -- "1" Metric: session metrics
+TestingSession -- "1" Metric: gathers metrics
 
 
-RadioDomain -- "*" ComponentIdentifier : "components"
-ComputeDomain -- "*" ComponentIdentifier : "components"
-TransportDomain -- "*" ComponentIdentifier : "components"
+RadioDomain -- "*" ComponentIdentifier : "RD components"
+ComputeDomain -- "*" ComponentIdentifier : "CD components"
+TransportDomain -- "*" ComponentIdentifier : "TD components"
 @enduml
