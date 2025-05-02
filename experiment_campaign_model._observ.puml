@@ -290,28 +290,12 @@ class TestingSession {
   +description: string                   ' Human-readable description
   +start_time: datetime                   ' e.g., "2025-04-01T09:00:00Z"
   +end_time: datetime                     ' e.g., "2025-04-15T18:00:00Z"
-  
-'   '=== Execution Details ===
-'   +executed_by: string                   ' e.g., "tranoris@example.org"
-'   +trigger_method: string                ' e.g., "manual", "API", "CI/CD pipeline"
-'   +measurement_family: string            ' from 3GPP 28.552 e.g., "DRB, RRC."
-
-'   '=== Session Parameters ===
-'   +ue_profile: string                    ' e.g., "3 UEs, 20 Mbps each, static"
-'   +traffic_pattern: string               ' e.g., "DL bulk", "UL random burst"
-'   +qos_profile: string                   ' e.g., "5QI-9"
-'   +slice_id: string                      ' e.g., "slice101"
-
-'   '=== Test Conditions & Setup ===
-'   +environment_snapshot: string          ' e.g., Git SHA or file path of infra config
-'   +network_config_snapshot: string       ' e.g., export of routing/slice/QoS config
-'   +ran_snapshot: string                  ' e.g., RAN config (MIMO, bandwidth, scheduler)
-'   +time_sync_status: string              ' e.g., "in-sync", "drifted", "unknown"
 
   '=== Outcome Summary ===
   +outcome: string                       ' e.g., "Passed", "Degraded", "Failed"
   +observed_issues: List<string>         ' e.g., ["latency spikes", "UE3 disconnects"]
-  +summary_metrics: Map                  ' e.g., {"avg_dl_throughput": "85 Mbps"}
+  +sessions_tools: List<MeasurementTool>                  ' e.g., {"iperfm tcpdump}
+  +metrics: List<Metric>                ' e.g., ["dl_throughput", "latency"]
   
   +metadata: Map                        ' Additional key-value annotations
   +artifacts: List<RelatedFile>
@@ -409,6 +393,18 @@ class ComponentIdentifier {
    +metadata: Map
 }
 
+
+class Metric {
+  + id: string      'some id
+  + name: string    'bandwidth, latency, jitter
+  + description: string 'free text
+  + value: string  'the value
+  + unit: string   'mhz, msecm mbps
+  + node: string  'e.g., "cell", "core", "ue", "CPU", Memory"
+    +metadata: Map
+    +artifacts: List<RelatedFile>
+}
+
 ExperimentCampaign -- "1" Environment:campaing_environment
 ExperimentCampaign -- "*" RelatedFile: related_files
 ExperimentCampaign  -- "*" TestingSession
@@ -429,7 +425,7 @@ TestingSession  -- "*" MeasurementTool : "measurement_tools"
 
 
 TestingSession -- "1" Environment:session_environment
-
+TestingSession -- "1" Metric: session metrics
 
 
 RadioDomain -- "*" ComponentIdentifier : "components"
