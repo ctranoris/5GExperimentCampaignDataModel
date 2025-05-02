@@ -6,10 +6,28 @@ info:
 servers:
   - url: https://api.example.com/v1
     description: Production server
-
+tags:
+  - name: ExperimentCampaigns
+    description: Endpoints related to Experiment Campaigns
+  - name: TestingSessions
+    description: Endpoints related to Testing Sessions
+  - name: Environments
+    description: Endpoints related to Environments
+  - name: Testbeds
+    description: Endpoints related to Testbeds
+  - name: Metrics
+    description: Endpoints related to Metrics
+  - name: Tags
+    description: Endpoints related to Tags
+  - name: RelatedFiles
+    description: Endpoints related to Related Files
+  - name: ContactInfo
+    description: Endpoints related to Contact Information
 paths:
   /experiment-campaigns:
     get:
+      tags:
+        - ExperimentCampaigns
       summary: Get all Experiment Campaigns
       responses:
         '200':
@@ -21,6 +39,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/ExperimentCampaign'
     post:
+      tags:
+        - ExperimentCampaigns
       summary: Create a new Experiment Campaign
       requestBody:
         required: true
@@ -38,6 +58,8 @@ paths:
 
   /experiment-campaigns/{id}:
     get:
+      tags:
+        - ExperimentCampaigns
       summary: Get an Experiment Campaign by ID
       parameters:
         - name: id
@@ -53,6 +75,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExperimentCampaign'
     put:
+      tags:
+        - ExperimentCampaigns
       summary: Update an Experiment Campaign
       parameters:
         - name: id
@@ -70,6 +94,8 @@ paths:
         '200':
           description: Experiment Campaign updated
     delete:
+      tags:
+        - ExperimentCampaigns
       summary: Delete an Experiment Campaign
       parameters:
         - name: id
@@ -83,6 +109,8 @@ paths:
 
   /environments:
     get:
+      tags:
+        - Environments
       summary: Get all Environments
       responses:
         '200':
@@ -94,6 +122,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Environment'
     post:
+      tags:
+        - Environments
       summary: Create a new Environment
       requestBody:
         required: true
@@ -111,6 +141,8 @@ paths:
 
   /environments/{id}:
     get:
+      tags:
+        - Environments
       summary: Get an Environment by ID
       parameters:
         - name: id
@@ -125,7 +157,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Environment'
-    put:
+    put:      
+      tags:
+        - Environments
       summary: Update an Environment
       parameters:
         - name: id
@@ -143,6 +177,8 @@ paths:
         '200':
           description: Environment updated
     delete:
+      tags:
+        - Environments
       summary: Delete an Environment
       parameters:
         - name: id
@@ -239,6 +275,8 @@ paths:
 
   /testbeds:
     get:
+      tags:
+        - Testbeds
       summary: Get all Testbeds
       responses:
         '200':
@@ -250,6 +288,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Testbed'
     post:
+      tags:
+        - Testbeds
       summary: Create a new Testbed
       requestBody:
         required: true
@@ -267,6 +307,8 @@ paths:
 
   /testbeds/{id}:
     get:
+      tags:
+        - Testbeds
       summary: Get a Testbed by ID
       parameters:
         - name: id
@@ -282,6 +324,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Testbed'
     put:
+      tags:
+        - Testbeds
       summary: Update a Testbed
       parameters:
         - name: id
@@ -299,6 +343,8 @@ paths:
         '200':
           description: Testbed updated
     delete:
+      tags:
+        - Testbeds
       summary: Delete a Testbed
       parameters:
         - name: id
@@ -312,6 +358,8 @@ paths:
 
   /metrics:
     get:
+      tags:
+        - Metrics
       summary: Get all Metrics
       responses:
         '200':
@@ -323,6 +371,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Metric'
     post:
+      tags:
+        - Metrics
       summary: Create a new Metric
       requestBody:
         required: true
@@ -340,6 +390,8 @@ paths:
 
   /metrics/{id}:
     get:
+      tags:
+        - Metrics
       summary: Get a Metric by ID
       parameters:
         - name: id
@@ -355,6 +407,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Metric'
     put:
+      tags:
+        - Metrics
       summary: Update a Metric
       parameters:
         - name: id
@@ -372,6 +426,8 @@ paths:
         '200':
           description: Metric updated
     delete:
+      tags:
+        - Metrics
       summary: Delete a Metric
       parameters:
         - name: id
