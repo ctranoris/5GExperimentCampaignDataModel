@@ -524,6 +524,91 @@ paths:
       responses:
         '204':
           description: Datasource deleted
+  /metric-groups:
+      get:
+        tags:
+          - MetricGroups
+        summary: Get all Metric Groups
+        responses:
+          '200':
+            description: A list of Metric Groups
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/MetricGroup'
+      post:
+        tags:
+          - MetricGroups
+        summary: Create a new Metric Group
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricGroup'
+        responses:
+          '201':
+            description: Metric Group created
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/MetricGroup'
+
+  /metric-groups/{id}:
+      get:
+        tags:
+          - MetricGroups
+        summary: Get a Metric Group by ID
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Metric Group details
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/MetricGroup'
+      put:
+        tags:
+          - MetricGroups
+        summary: Update a Metric Group
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricGroup'
+        responses:
+          '200':
+            description: Metric Group updated
+      delete:
+        tags:
+          - MetricGroups
+        summary: Delete a Metric Group
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: string
+        responses:
+          '204':
+            description: Metric Group deleted
+
+
+
 components:
   schemas:
     ExperimentCampaign:
@@ -707,6 +792,9 @@ components:
         node:
           type: string
           example: "Core"
+        datasource_id:
+          type: string
+          example: "ds-001"
         metadata:
           type: object
           additionalProperties:
@@ -912,3 +1000,27 @@ components:
         created_by:
           type: string
           example: "admin"
+    MetricGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "mg-001"
+        name:
+          type: string
+          example: "Throughput Metrics"
+        description:
+          type: string
+          example: "A group of metrics related to throughput performance."
+        metric_ids:
+          type: array
+          items:
+            type: string
+          example: ["metric-001", "metric-002", "metric-003"]
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            created_by: "admin"
+            last_updated: "2025-05-01T12:00:00Z"
