@@ -894,6 +894,9 @@ components:
         type:
           type: string
           example: "Database"
+        testbed_id:
+          type: string
+          example: "testbed-001"
         connection_details:
           type: object
           properties:
@@ -906,9 +909,6 @@ components:
             target_name:
               type: string
               example: "Target System 1"
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          example:
-            created_by: "admin"
+        created_by:
+          type: string
+          example: "admin"
