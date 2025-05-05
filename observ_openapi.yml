@@ -23,6 +23,10 @@ tags:
     description: Endpoints related to Related Files
   - name: ContactInfo
     description: Endpoints related to Contact Information
+  - name: Datasources
+    description: Endpoints related to Datasources
+
+
 paths:
   /experiment-campaigns:
     get:
@@ -438,7 +442,88 @@ paths:
       responses:
         '204':
           description: Metric deleted
+  /datasources:
+    get:
+      tags:
+        - Datasources
+      summary: Get all Datasources
+      responses:
+        '200':
+          description: A list of Datasources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Datasource'
+    post:
+      tags:
+        - Datasources
+      summary: Create a new Datasource
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Datasource'
+      responses:
+        '201':
+          description: Datasource created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Datasource'
 
+  /datasources/{id}:
+    get:
+      tags:
+        - Datasources
+      summary: Get a Datasource by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Datasource details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Datasource'
+    put:
+      tags:
+        - Datasources
+      summary: Update a Datasource
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Datasource'
+      responses:
+        '200':
+          description: Datasource updated
+    delete:
+      tags:
+        - Datasources
+      summary: Delete a Datasource
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Datasource deleted
 components:
   schemas:
     ExperimentCampaign:
@@ -793,3 +878,37 @@ components:
         created_by:
           type: string
           example: "admin"
+
+    Datasource:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "ds-001"
+        name:
+          type: string
+          example: "Datasource 1"
+        description:
+          type: string
+          example: "This is a sample datasource used for testing."
+        type:
+          type: string
+          example: "Database"
+        connection_details:
+          type: object
+          properties:
+            host:
+              type: string
+              example: "localhost"
+            port:
+              type: integer
+              example: 5432
+            target_name:
+              type: string
+              example: "Target System 1"
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            created_by: "admin"
